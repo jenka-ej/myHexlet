@@ -6,7 +6,7 @@ const removeFirstLevel = (mass) => {
 
 export default removeFirstLevel;
 
-/* test */
+/* __tests__ */
 
 import removeFirstLevel from '../removeFirstLevel.js';
 
