@@ -62,7 +62,7 @@ const plain = (objDiff) => {
         || value === false
         || value === null
         || value === '[complex value]'
-        || !Number.isNaN(value));
+        || !isNaN(value));
       if (sign === '-') {
         return `Property '${key}' was removed`;
       }
@@ -79,12 +79,12 @@ const plain = (objDiff) => {
         || value1 === false
         || value1 === null
         || value1 === '[complex value]'
-        || !Number.isNaN(value1));
+        || !isNaN(value1));
       const valueS2 = (value2 === true
         || value2 === false
         || value2 === null
         || value2 === '[complex value]'
-        || !Number.isNaN(value2));
+        || !isNaN(value2));
       if (value1 === '') {
         if (valueS2) {
           return `Property '${key}' was updated. From '' to ${value2}`;
@@ -119,12 +119,12 @@ console.log(plain(diff(file1, file2)));
 Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
-Property 'common.setting4' was added with value: blah blah
+Property 'common.setting4' was added with value: 'blah blah'
 Property 'common.setting5' was added with value: [complex value]
-Property 'common.setting6.doge.wow' was updated. From '' to so much
-Property 'common.setting6.ops' was added with value: vops
-Property 'group1.baz' was updated. From bas to bars
-Property 'group1.nest' was updated. From [complex value] to str
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]
 */
