@@ -1,4 +1,4 @@
-const file1 = {
+export const file1 = {
   "common": {
     "setting1": "Value 1",
     "setting2": 200,
@@ -24,7 +24,7 @@ const file1 = {
     }
   }
 };
-const file2 = {
+export const file2 = {
   "common": {
     "follow": false,
     "setting1": "Value 1",
@@ -55,7 +55,7 @@ const file2 = {
     "fee": 100500
   }
 };
-const diff = (obj1, obj2) => {
+export const diff = (obj1, obj2) => {
   const getChildren = (obj) => Object.keys(obj);
   const childrenObj1 = getChildren(obj1);
   const childrenObj2 = getChildren(obj2);
@@ -103,51 +103,3 @@ const diff = (obj1, obj2) => {
   };
   return final.reduce(cb, {});
 };
-
-// output
-/*
-{
-    common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: {
-            key5: value5
-        }
-        setting6: {
-            doge: {
-              - wow:
-              + wow: so much
-            }
-            key: value
-          + ops: vops
-        }
-    }
-    group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: {
-            key: value
-        }
-      + nest: str
-    }
-  - group2: {
-        abc: 12345
-        deep: {
-            id: 45
-        }
-    }
-  + group3: {
-        deep: {
-            id: {
-                number: 45
-            }
-        }
-        fee: 100500
-    }
-}    
-*/
