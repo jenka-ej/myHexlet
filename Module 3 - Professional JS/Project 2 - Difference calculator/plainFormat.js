@@ -1,4 +1,4 @@
-import {file1, file2, diff} from './genDiffRecursion.js';
+import {file1, file2, diff} from './compareData.js';
 const plain = (objDiff) => {
   const result = [];
   const plainObjToText = (obj, path) => {
