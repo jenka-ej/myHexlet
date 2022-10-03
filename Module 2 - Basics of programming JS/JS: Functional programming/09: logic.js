@@ -1,4 +1,4 @@
-export const If = (condition) => (a) => (b) => condition(a)(b);
+export const If = (f) => f;
 export const True = (a) => () => a;
 export const False = () => (b) => b;
 
