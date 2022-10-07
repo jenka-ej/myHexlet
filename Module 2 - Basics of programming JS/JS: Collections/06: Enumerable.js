@@ -9,39 +9,21 @@ class Enumerable {
   }
 
   orderBy(fn, direction = 'asc') {
-    if (direction === 'asc') {
-      const orderedBy = this.collection.slice().sort((a, b) => {
-        if (fn(a) > fn(b)) {
-          return 1;
-        }
-        if (fn(a) < fn(b)) {
-          return -1;
-        }
-        return 0;
-      });
-      return new Enumerable(orderedBy);
-    }
-    if (direction === 'desc') {
-      const orderedBy = this.collection.slice().sort((a, b) => {
-        if (fn(a) < fn(b)) {
-          return 1;
-        }
-        if (fn(a) > fn(b)) {
-          return -1;
-        }
-        return 0;
-      });
-      return new Enumerable(orderedBy);
-    }
-    const orderedBy = this.collection.slice().sort((a, b) => {
-      if (fn(a) > fn(b)) {
-        return 1;
+    const comparator = (a, b) => {
+      const fn1 = fn(a);
+      const fn2 = fn(b);
+
+      const result = (direction === 'desc' ? 1 : -1);
+
+      if (fn1 > fn2) {
+        return -result;
       }
-      if (fn(a) < fn(b)) {
-        return -1;
+      if (fn1 < fn2) {
+        return result;
       }
       return 0;
-    });
+    };
+    const orderedBy = this.collection.slice().sort(comparator);
     return new Enumerable(orderedBy);
   }
 
