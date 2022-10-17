@@ -7,7 +7,7 @@
 // Реализуйте рекурсивную функцию findPrimitiveBox(), которая принимает на вход "коробку" (пару), находит внутри нее пару без вложенных пар (как описано выше) и 
 // возвращает наружу.
 
-import { car, cdr, isPair, toString } from '@hexlet/pairs'; 
+import { car, cdr, isPair, toString } from '@hexlet/pairs'; // eslint-disable-line
 
 const findPrimitiveBox = (pair) => {
   const pairCar = car(pair);
