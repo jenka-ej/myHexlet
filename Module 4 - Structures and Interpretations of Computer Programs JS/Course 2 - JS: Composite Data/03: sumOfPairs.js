@@ -1,6 +1,6 @@
 // Реализуйте функцию sumOfPairs(), которая принимает на вход две пары и возвращает новую пару, в элементах которой находятся суммы элементов из исходных пар.
 
-import { cons, car, cdr, toString } from '@hexlet/pairs'; 
+import { cons, car, cdr, toString } from '@hexlet/pairs'; // eslint-disable-line
 
 const sumOfPairs = (pair1, pair2) => {
   const sumCar = car(pair1) + car(pair2);
