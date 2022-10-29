@@ -1,3 +1,4 @@
+// ОЧЕНЬ СЛОЖНАЯ ЗАДАЧКА*
 // solution.js
 // Реализуйте и экспортируйте по умолчанию функцию, которая возвращает список нод в соответствии с запросом. 
 // Запрос это список из имен тегов, в котором каждый следующий тег это тег, вложенный в предыдущий. Порядок, в котором ноды возвращаются - не важен.
@@ -75,7 +76,7 @@ import { l, isEmpty, head, tail, concat, toString as listToString } from '@hexle
 import { is, toString as htmlToString, hasChildren, children, reduce, filter, map } from '@hexlet/html-tags'; // eslint-disable-line
 
 const select = (query1, html) => {
-  // Формирую первый редьюс, который вытаскивает элементы с любой глубины дерева по первому тегу head(query1)
+  // Формирую первый редьюс, вытаскивающий узлы с любой глубины дерева по первому тегу head(query1)
   const cb1 = (node1, acc1) => {
     if (hasChildren(node1)) {
       if (is(head(query1), node1)) {
