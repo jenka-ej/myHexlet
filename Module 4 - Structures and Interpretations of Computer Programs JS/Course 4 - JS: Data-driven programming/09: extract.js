@@ -4,6 +4,8 @@
 import { map } from '@hexlet/pairs-data';
 import { getAttribute } from './tags.js';
 
+// Code version #1
+
 const extract = (list) => (map((unit) => {
   if (getAttribute('href', unit) !== undefined) {
     return getAttribute('href', unit);
@@ -12,6 +14,19 @@ const extract = (list) => (map((unit) => {
 }, list));
 
 export default extract;
+
+// Code version #2
+
+import { map } from '@hexlet/pairs-data';
+import { getAttribute, getName } from './tags.js';
+
+const mapping = {
+  a: (t) => getAttribute('href', t),
+  img: (t) => getAttribute('src', t),
+  link: (t) => getAttribute('href', t),
+};
+
+export default (tags) => map((tag) => mapping[getName(tag)](tag), tags);
 
 /* __tests__ */
 
