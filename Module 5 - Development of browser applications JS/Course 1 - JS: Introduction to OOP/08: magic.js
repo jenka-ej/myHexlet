@@ -7,7 +7,7 @@
 const magic = (...nums) => {
   const result = nums.reduce((acc, num) => acc + num, 0);
   const inner = (...newNums) => magic(result, ...newNums);
-  inner.valueOf = () => nums.reduce((acc, num) => acc + num, 0);
+  inner.valueOf = () => result;
   return inner;
 };
 
