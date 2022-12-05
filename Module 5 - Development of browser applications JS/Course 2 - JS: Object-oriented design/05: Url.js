@@ -30,12 +30,11 @@ export default class Url {
     const url = new URL(this.url);
     const query = url.search.substring(1, url.search.length).split('&');
     const queryMass = query.map((item) => item.split('='));
-    const queryObj = queryMass.reduce((acc, item) => {
+    return queryMass.reduce((acc, item) => {
       const [key, value] = item;
       acc[key] = value;
       return acc;
     }, {});
-    return queryObj;
   }
 
   getQueryParam(key, value = null) {
