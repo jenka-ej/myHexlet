@@ -17,11 +17,11 @@ export default class Node {
   }
 
   getLeft() {
-    return this.key === null ? this.key : this.lkey;
+    return this.lkey;
   }
 
   getRight() {
-    return this.key === null ? this.key : this.rkey;
+    return this.rkey;
   }
 
   search(num) {
