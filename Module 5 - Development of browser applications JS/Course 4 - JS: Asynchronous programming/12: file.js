@@ -6,20 +6,12 @@ import _ from 'lodash';
 import fsp from 'fs/promises';
 
 export function getDirectorySize(dirPath) {
-  const initPromise = Promise.resolve([]);
-  const promise1 = fsp.readdir(dirPath)
-    .then((content) => content.map((name) => path.join(dirPath, name)));
-  const intermediateResult = Promise.all([promise1]);
-  const promise2 = intermediateResult.then(([content]) => content.reduce((acc, absPath) => {
-    const newAcc = acc.then((accContent) => fsp.stat(absPath)
-      .then((data) => accContent.concat(data)));
-    return newAcc;
-  }, initPromise));
-  const intermediateResult2 = Promise.all([promise2]);
-  const promise3 = intermediateResult2.then(([content]) => content.filter((stat) => stat.isFile()))
-    .then((content) => _.sumBy(content, 'size'));
-  const result = Promise.all([promise3]);
-  return result.then(([content]) => content);
+  const promise1 = fsp.readdir(dirPath).then((fileNames) => {
+    const absPaths = fileNames.map((fileName) => path.join(dirPath, fileName));
+    const promises = absPaths.map((absPath) => fsp.stat(absPath));
+    return Promise.all(promises);
+  });
+  return promise1.then((stats) => _.sumBy(stats.filter((stat) => stat.isFile()), 'size'));
 }
 
 /* __tests__ */
