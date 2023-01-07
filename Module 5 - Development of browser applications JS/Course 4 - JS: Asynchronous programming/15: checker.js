@@ -16,7 +16,7 @@ const getBadLinks = async (url) => {
   const response = await axios.get(url);
   const links = extractLinks(response.data);
   const fn = (link) => axios.get(link).then(() => null).catch(() => link);
-  const mapped = await Promise.all(links.map((link) => fn(link)));
+  const mapped = await Promise.all(links.map(fn));
   return mapped.filter((badUrl) => badUrl !== null);
 };
 export default getBadLinks;
