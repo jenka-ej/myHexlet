@@ -1,0 +1,37 @@
+<script>/* Подключите файл index.js используя тег <script>. В веб-доступе, попробуйте вызвать функцию, которая определена в файле index.js. */</script>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- BEGIN (write your solution here) -->
+    <script src='/index.js'></script>
+    <!-- END -->
+  </head>
+  <body>
+    <h1>Hexlet Exercise</h1>
+    <p>Open DevTools</p>
+  </body>
+</html>
+
+<script>/* index.js */</script>
+
+const showTheWay = () => {
+  console.log('Run Boy Run');
+};
+
+<script>/* __tests__ */</script>
+
+import '@testing-library/jest-dom';
+import fs from 'fs';
+import path from 'path';
+import querySelector from '@github/query-selector';
+
+const { query } = querySelector;
+
+test('application', () => {
+  const initHtml = fs.readFileSync(path.join('public', 'index.html')).toString();
+  document.documentElement.innerHTML = initHtml;
+  const element = query(document, 'script');
+  expect(element.src).toMatch(/index\.js/);
+  expect(element).toBeInTheDocument();
+});
