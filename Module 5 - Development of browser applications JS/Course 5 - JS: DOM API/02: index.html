@@ -1,0 +1,47 @@
+<!-- Подключите файлы writer.js и reader.js в HTML в том же порядке, в котором они указаны тут. -->
+<!-- Создайте глобальную переменную с именем myvar и значением 'Dont do it in real life'. -->
+<!-- Выведите в консоль значение глобальной переменной myvar. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src='writer.js'></script>
+    <script src='reader.js'></script>
+  </head>
+  <body>
+    <h1>Hexlet Exercise</h1>
+    <p>Open DevTools</p>
+  </body>
+</html>
+
+<!-- writer.js -->
+
+window.myvar = 'Dont do it in real life';
+
+<!-- reader.js -->
+
+console.log(myvar);
+
+<!-- __tests__ -->
+
+import '@testing-library/jest-dom';
+import { jest } from '@jest/globals';
+import fs from 'fs';
+import path from 'path';
+import querySelector from '@github/query-selector';
+
+const { querySelectorAll } = querySelector;
+
+test('scripts count', () => {
+  const initHtml = fs.readFileSync(path.join('public', 'index.html')).toString();
+  document.documentElement.innerHTML = initHtml;
+  const elements = querySelectorAll(document, 'script');
+  expect(elements).toHaveLength(2);
+});
+
+test('global variable', async () => {
+  const spy = jest.spyOn(window.console, 'log');
+  await import('../public/writer.js');
+  await import('../public/reader.js');
+  expect(spy).toHaveBeenCalledWith('Dont do it in real life');
+});
