@@ -15,14 +15,15 @@
 
 export default () => {
   const button = document.querySelector('#alert-generator');
+  let i = 1;
   button.addEventListener('click', () => {
     const container = document.getElementsByClassName('alerts m-5')[0];
-    const n = container.childElementCount;
     const alert = document.createElement('div');
-    alert.textContent = `Alert ${n}`;
+    alert.textContent = `Alert ${i}`;
     alert.classList.add('alert');
     alert.classList.add('alert-primary');
     container.prepend(alert);
+    i += 1;
   });
 };
 
