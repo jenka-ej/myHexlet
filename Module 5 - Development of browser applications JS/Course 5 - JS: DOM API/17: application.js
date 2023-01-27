@@ -25,8 +25,8 @@ import 'whatwg-fetch';
 export default () => {
   const inputForms = document.querySelectorAll('.ml-2');
   inputForms.forEach((inputForm) => {
-    const mainURL = window.location.origin;
     inputForm.addEventListener('input', async (e) => {
+      const mainURL = window.location.origin;
       const query = e.target.dataset.autocomplete;
       const nameForSearch = e.target.value;
       const url = new URL(query, mainURL);
