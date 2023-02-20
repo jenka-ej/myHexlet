@@ -68,10 +68,8 @@ export default () => {
 
   const renderName = (state) => {
     if (state.name.stat === 'filling') {
-      state.name.lastName = '';
-      const form = document.createElement('form');
-      form.classList.add('nameForm');
-      nameForm.append(form);
+      nameForm.innerHTML = '<form class=nameForm></form>';
+      const form = document.querySelector('.nameForm');
       const label = document.createElement('label');
       label.classList.add('sr-only');
       label.setAttribute('for', 'name');
@@ -82,12 +80,13 @@ export default () => {
       input1.setAttribute('id', 'name');
       input1.setAttribute('name', 'name');
       input1.setAttribute('value', state.name.lastName);
+      state.name.lastName = '';
       form.append(input1);
       const input2 = document.createElement('input');
       input2.setAttribute('type', 'submit');
       input2.setAttribute('value', 'Save name');
       form.append(input2);
-      input1.focus();
+      input1.select();
       input1.addEventListener('keyup', (e) => {
         state.name.lastName = e.target.value;
       });
@@ -110,10 +109,8 @@ export default () => {
 
   const renderEmail = (state) => {
     if (state.email.stat === 'filling') {
-      state.email.lastEmail = '';
-      const form = document.createElement('form');
-      form.classList.add('emailForm');
-      emailForm.append(form);
+      emailForm.innerHTML = '<form class=emailForm></form>';
+      const form = document.querySelector('.emailForm');
       const label = document.createElement('label');
       label.classList.add('sr-only');
       label.setAttribute('for', 'email');
@@ -124,12 +121,13 @@ export default () => {
       input1.setAttribute('id', 'email');
       input1.setAttribute('name', 'email');
       input1.setAttribute('value', state.email.lastEmail);
+      state.email.lastEmail = '';
       form.append(input1);
       const input2 = document.createElement('input');
       input2.setAttribute('type', 'submit');
       input2.setAttribute('value', 'Save email');
       form.append(input2);
-      input1.focus();
+      input1.select();
       input1.addEventListener('keyup', (e) => {
         state.email.lastEmail = e.target.value;
       });
