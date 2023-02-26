@@ -67,6 +67,7 @@ export default () => {
 
   const buttons = document.querySelectorAll('.list-group-item');
   buttons.forEach((button) => button.addEventListener('click', (e) => {
+    e.preventDefault();
     const name = e.target.textContent.trim().toLowerCase();
     if (e.target.classList.contains('list-group-item-action')) {
       watchedSecondaryState.ui.active = name;
