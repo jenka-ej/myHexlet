@@ -47,9 +47,9 @@ const __dirname = path.dirname(__filename);
 const getFixturePath = (name) => path.join(__dirname, '..', '__fixtures__', name);
 
 test('log', () => {
-  const callback = jest.fn();
+  const mock = jest.fn();
 
-  getFilesCount(getFixturePath('nested'), callback);
-  expect(callback.mock.calls).toHaveLength(1);
-  expect(callback.mock.calls[0][0]).toBe('Go!');
+  getFilesCount(getFixturePath('nested'), mock);
+  expect(mock).toHaveBeenCalledTimes(1);
+  expect(mock).toHaveBeenCalledWith('Go!');
 });
