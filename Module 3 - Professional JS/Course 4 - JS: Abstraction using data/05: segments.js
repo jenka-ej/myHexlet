@@ -1,3 +1,9 @@
+// Реализуйте и экспортируйте указанные ниже функции:
+// 1) makeSegment(). Принимает на вход две точки и возвращает отрезок
+// 2) getMidpointOfSegment(). Принимает на вход отрезок и возвращает точку находящуюся на середине отрезка
+// 3) getBeginPoint(). Принимает на вход отрезок и возвращает точку начала отрезка
+// 4) getEndPoint(). Принимает на вход отрезок и возвращает точку конца отрезка
+
 import { makeDecartPoint, getX, getY } from './points.js';
 
 const makeSegment = (point1, point2) => ({ beginPoint: point1, endPoint: point2 });
