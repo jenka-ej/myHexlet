@@ -11,6 +11,7 @@
 
 // Названия переменных должны передавать смысл чисел, но должны при этом оставаться достаточно короткими и ёмкими для комфортного чтения.
 
+const king = 'King Balon the 6th';
 const numberOfCastles = 6;
 const roomsPerCastle = 17;
 console.log(king + ' has ' + numberOfCastles * roomsPerCastle + ' rooms.');
