@@ -1,3 +1,8 @@
+// Реализуйте интерфейсные функции точек:
+// 1) getX(point)
+// 2) getY(point)
+// 3) makePoint(x, y). Принимает на вход координаты и возвращает точку. Уже реализован
+
 const makePoint = (x, y) => {
   const point = {
     angle: Math.atan2(y, x),
