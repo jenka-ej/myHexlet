@@ -1,6 +1,8 @@
 // Напишите программу, которая берет исходное количество евро, записанное в константу eurosCount, переводит евро в доллары и выводит на экран.
 // Затем полученное значение переводит в рубли и выводит на новой строчке.
 
+const eurosCount = 100;
+
 const dollarsCount = eurosCount * 1.25;
 console.log(dollarsCount);
 const rublesCount = dollarsCount * 60;
