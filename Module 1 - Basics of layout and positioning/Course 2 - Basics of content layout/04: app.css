@@ -1,0 +1,165 @@
+/* Стили body
+1) Размер шрифта: 16px
+2) Межстрочный интервал: 1.5
+3) Тип шрифта: без засечек
+
+Логотип портала «Artist Magazine» находится в блоке с классом .logo. Установите следующие стили:
+1) Цвет: #333
+2) Размер текста: 30px
+3) Межстрочный интервал: normal
+4) Тип шрифта: Cormorant. В качестве семейства установите шрифт с засечками
+
+Ссылки навигации
+1) Цвет: #616161
+2) Жирная насыщенность
+3) Секция с интервью
+
+Основная секция страницы имеет класс .interview. Для этого блока установите следующие стили:
+1) Цвет: #333
+2) Размер шрифта: 18px
+3) Межстрочный интервал: 1.5
+4) Тип шрифта: с засечками
+
+Заголовок интервью имеет класс .interview-header. Для заголовка установите следующие стили:
+1) Размер текста: 50px
+2) Межстрочный интервал: 1.2
+3) Тип шрифта: Cormorant. В качестве семейства установите шрифт с засечками
+4) Жирная насыщенность
+
+Вступление, или краткое описание интервью расположено в блоке с классом .interview-description. Установите следующие стили для блока:
+1) Цвет: #686868
+2) Тип шрифта: без засечек
+
+Информация об авторе и дате выпуска интервью находится в блоке .interview-footer. Установите следующие стили для блока:
+1) Размер шрифта: 12px
+2) Межстрочный интервал: 1.25
+3) Выравнивание по правому краю
+
+Само интервью располагается в блоке .interview-text. Этот блок имеет следующие стили:
+1) Размер шрифта: 20px
+2) Межстрочный интервал: 1.75
+3) Выравнивание по ширине
+
+Все необходимые селекторы уже есть в файле app.css. Ваша задача — дописать нужные стили. */
+
+body {
+  width: 790px;
+  margin: 0 auto;
+  padding: 50px 0 100px;
+
+  font: 16px/1.5 sans-serif;
+
+  background-color: #ebebeb;
+}
+
+figure {
+  margin: 50px 0 0;
+}
+
+figcaption {
+  font-size: 12px;
+}
+
+img {
+  width: 100%;
+}
+
+.logo {
+  margin-bottom: 30px;
+
+  color: #333;
+  font: 30px Cormorant, serif;
+  letter-spacing: 15px;
+  text-transform: uppercase;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.nav > * {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav a {
+  color: #616161;
+
+  font-weight: bold;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+
+  text-decoration: none;
+}
+
+.interview {
+  color: #333;
+
+  font: 18px/1.5 serif;
+}
+
+.interview-header {
+  font: bold 50px/1.2 Cormorant, serif;
+}
+
+.interview-description {
+  color: #686868;
+  font-family: sans-serif;
+}
+
+.interview-footer {
+  font-size: 12px;
+  line-height: 1.25;
+
+  text-align: right;
+}
+
+.interview-text {
+  font-size: 20px;
+  line-height: 1.75;
+
+  text-align: justify;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1280,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Steve Vai Interview Page', () => {
+  test('Interview page should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
