@@ -1,0 +1,77 @@
+<!-- Создайте базовую структуру страницы резюме. Начните с указания <!DOCTYPE> для стандарта HTML5. Для тега <html> укажите русский язык
+
+Секция head
+1) Заголовок страницы: Моё первое резюме верстальщика
+2) Определите кодировку UTF-8
+
+Секция body
+1) Заголовок первого уровня
+2) Два параграфа
+
+Внутри этих тегов разместите любую информацию. Главное, чтобы они не были пустыми. -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Моё первое резюме верстальщика</title>
+</head>
+<body>
+  <h1>Михайлов Никита</h1>
+  <p>Я преподаватель и автор всех курсов по вёрстке на Хекслете</p>
+  <p>Хочу, чтобы вы полюбили вёрстку, а мои курсы доставили вам удовольствие :)</p>
+</body>
+</html>
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('layout tests', () => {
+  test('The HTML tag must have the lang attribute', async () => {
+    const html = page.locator('html');
+    await expect(html).toHaveAttribute('lang', 'ru');
+  });
+
+  test.describe('Testing the head section', async () => {
+    test.describe.configure({ mode: 'serial' });
+
+    test('head section should be in index.html', async () => {
+      const header = page.locator('head');
+      await expect(header).not.toBeEmpty();
+    });
+
+    test('Title tag should be in head section', async () => {
+      await expect(page).toHaveTitle('Моё первое резюме верстальщика');
+    });
+
+    test('The section contains the charset meta tag', async () => {
+      const charset = page.locator('head > meta[charset]');
+      await expect(charset).toHaveAttribute('charset', 'UTF-8');
+    });
+  });
+
+  test.describe('Testing the body section', async () => {
+    test('The section contains header', async () => {
+      const header = page.locator('h1');
+      await expect(header).toBeVisible();
+      await expect(header).not.toBeEmpty();
+    });
+
+    test('The section contains two paragraphs', async () => {
+      const paragraph = page.locator('p');
+      await expect(paragraph).toHaveCount(2);
+    });
+  });
+});
