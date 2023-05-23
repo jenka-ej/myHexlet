@@ -1,0 +1,70 @@
+<!-- Создайте семантическую вёрстку шапки страницы.
+Шапка состоит из:
+1) Логотипа
+2) Меню
+
+Для логотипа используйте тег <img> с атрибутом src и значением logo.png
+Внутри меню находится маркированный список из четырёх пунктов. Внутри каждого пункта ссылка. В качестве пути используйте символ # и дайте ссылкам произвольный текст. -->
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Семантическая вёрстка</title>
+  </head>
+
+  <body>
+    <header>
+      <img src="logo.png" alt="Hexlet">
+      <nav>
+        <ul>
+          <li><a href="#">Главная</a></li>
+          <li><a href="#">Каталог курсов</a></li>
+          <li><a href="#">О проекте</a></li>
+          <li><a href="#">Контакты</a></li>
+        </ul>
+      </nav>
+    </header>
+  </body>
+
+</html>
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Testing the HTML Semantic exercise', () => {
+  test('The header element exists', async () => {
+    const header = page.locator('header');
+    await expect(header).toBeVisible();
+  });
+
+  test('The nav element exists inside the header element', async () => {
+    const nav = page.locator('header > nav');
+    await expect(nav).toBeVisible();
+  });
+
+  test('The logo element exists inside the header element', async () => {
+    const logo = page.locator('header > img');
+    await expect(logo).toBeVisible();
+  });
+
+  test('There are 4 links inside the menu', async () => {
+    const links = page.locator('header > nav > ul a');
+    await expect(links).toHaveCount(4);
+  });
+});
