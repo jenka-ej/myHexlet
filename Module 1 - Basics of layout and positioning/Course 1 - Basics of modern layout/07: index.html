@@ -1,0 +1,138 @@
+<!-- Добавьте следующие элементы в HTML-разметку:
+1) Заголовок h1 и h2. В заголовке первого уровня напишите как вас зовут. В заголовке второго уровня укажите вашу должность.
+2) Три секции section
+2.1) Первая секция рассказывает о вашем образовании.
+2.2) Вторая секция рассказывает о ваших навыках.
+2.3) Третья секция служит для различной дополнительной информации о вас. Здесь может быть всё что угодно.
+Каждая секция обязательно содержит заголовок второго уровня. Так же, в первых двух секциях должен присутствовать маркированный список.
+В разметке не используются классы или идентификаторы. Все стилистические изменения будут производиться с помощью селекторов по тегам. 
+Это не всегда хорошо в реальной работе, но так проще понять принцип каскадности. -->
+
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Моё описание</title>
+  </head>
+  <body>
+    <main>
+      <h1>Никита Михайлов</h1>
+      <h2>Преподаватель профессии «Верстальщик»</h2>
+
+      <section>
+        <h2>Образование</h2>
+        <ul>
+          <li>Колледж автоматизации и информационных технологий №20. Направление: Автоматизированные системы обработки
+            информации и управления</li>
+          <li>Московский Энергетический Институт. Кафедра безопасности и информационных технологий. Специальность:
+            Информационная безопасность</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Навыки</h2>
+        <ul>
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Дополнительная информация</h2>
+        <p>6 лет в аутсорсинговой компании. Развивал клиентские проекты, делал фичи для разных CMS. В основном верстал,
+          готов передать весь опыт вам. Поработав с сотнями проектов, научился выкручиваться даже из самых безнадёжных
+          ситуаций. Помогу освоить вёрстку, чтобы она перестала казаться чем-то страшным.</p>
+      </section>
+    </main>
+  </body>
+</html>
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Testing the CSS Cascade exercise', () => {
+
+  test('Main section must include 2 headers and 3 sections', async () => {
+    const main = page.locator('main');
+    const headerLvlOne = main.locator('> h1');
+    const headerLvlTwo = main.locator('> h2');
+    const sectionCount = await main.locator('> section').count();
+
+    await expect(main).toBeVisible();
+    await expect(headerLvlOne).toBeVisible();
+    await expect(headerLvlTwo).toBeVisible();
+    await expect(sectionCount).toEqual(3);
+  });
+
+  test('Each section should have a second-level header', async () => {
+    const sections = page.locator('main > section');
+    const sectionCount = await sections.count();
+
+    for(let i = 0; i < sectionCount; i+=1) {
+      const header = sections.nth(i).locator('> h2');
+      await expect(header).toBeVisible();
+    }
+  });
+
+  test('The styles of the body element must match the task', async () => {
+    const body = page.locator('body');
+
+    await expect(body).toHaveCSS('font-size', '18px');
+    await expect(body).toHaveCSS('line-height', '27px');
+    await expect(body).toHaveCSS('color', 'rgb(51, 51, 51)');
+  });
+
+  test('The styles of the h1 element must match the task', async () => {
+    const header = page.locator('h1');
+
+    await expect(header).toHaveCSS('font-size', '60px');
+    await expect(header).toHaveCSS('margin-top', '50px');
+    await expect(header).toHaveCSS('margin-bottom', '10px');
+    await expect(header).toHaveCSS('text-align', 'center');
+  });
+
+  test('The styles of the h2 element must match the task', async () => {
+    const header = page.locator('main > h2');
+
+    await expect(header).toHaveCSS('font-size', '25px');
+    await expect(header).toHaveCSS('margin-top', '0px');
+    await expect(header).toHaveCSS('padding-bottom', '30px');
+    await expect(header).toHaveCSS('text-align', 'center');
+  });
+
+  test('The styles of the section element must match the task', async () => {
+    const section = page.locator('main > section').first();
+
+    await expect(section).toHaveCSS('margin', '50px 0px');
+    await expect(section).toHaveCSS('padding', '0px 50px');
+  });
+
+  test('The styles of the h2 element inside the section must match the task', async () => {
+    const header = page.locator('main > section > h2').first();
+
+    await expect(header).toHaveCSS('padding', '0px');
+    await expect(header).toHaveCSS('border-style', 'none');
+    await expect(header).toHaveCSS('text-align', 'left');
+  });
+
+  test('The styles of the li element must match the task', async () => {
+    const listItem = page.locator('ul > li').first();
+
+    await expect(listItem).toHaveCSS('margin-bottom', '10px');
+  });
+});
