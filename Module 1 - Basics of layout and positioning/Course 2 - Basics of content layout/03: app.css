@@ -1,0 +1,87 @@
+/* Оформите текст по следующим правилам:
+1) Заголовки всех уровней по умолчанию имеют нормальное начертание, выравнивание по центру и цвет #646464
+2) Заголовок первого уровня имеет жирное начертание и размер шрифта 70 пикселей
+3) Заголовок второго уровня имеет размер шрифта 40 пикселей
+4) Заголовок третьего уровня имеет размер шрифта 20 пикселей
+5) Заголовок четвёртого уровня имеет размер шрифта 18 пикселей
+6) Параграфы выровнены по ширине. Размер шрифта 16 пикселей и цвет #333 */
+
+body {
+  width: 700px;
+  margin: 0 auto;
+  padding: 100px 0;
+
+  font-family: serif;
+
+  background-color: #eee;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: #646464;
+  font-weight: normal;
+  text-align: center;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 70px;
+}
+
+h2 {
+  font-size: 40px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+h4 {
+  font-size: 18px;
+}
+
+p {
+  color: #333;
+  font-size: 16px;
+  text-align: justify;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1000,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('War and Peace Template', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
