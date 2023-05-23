@@ -1,0 +1,67 @@
+/* Оформите текст по следующим правилам:
+
+Для класса quote установите правила:
+1) Цвет текста: #404040
+2) Жирное начертание шрифта. Используйте словесное описание в значении. Для этого воспользуйтесь свойством font-weight со значением bold
+3) Размер текста: 20px
+4) Выравнивание текста по центру
+
+Для класса quote-author установите правила:
+1) Нормальное начертание шрифта. Используйте словесное описание в значении. Для этого воспользуйтесь свойством font-weight со значением normal
+2) Размер текста: 16px
+3) Выравнивание текста по правому краю */
+
+.quote {
+  display: inline-block;
+  padding: 20px 30px;
+
+  color: #404040;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+
+  border: 1px solid #bbb;
+  border-radius: 50px 0;
+}
+
+.quote-author {
+  display: block;
+
+  font-weight: normal;
+  font-size: 16px;
+  text-align: right;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Quote Component Testing', () => {
+  test('The styles of the quote element must match the task', async () => {
+    const body = page.locator('.quote');
+
+    await expect(body).toHaveCSS('font-weight', '700');
+    await expect(body).toHaveCSS('font-size', '20px');
+    await expect(body).toHaveCSS('color', 'rgb(64, 64, 64)');
+    await expect(body).toHaveCSS('text-align', 'center');
+  });
+
+  test('The styles of the quote-author element must match the task', async () => {
+    const body = page.locator('.quote-author');
+
+    await expect(body).toHaveCSS('font-weight', '400');
+    await expect(body).toHaveCSS('font-size', '16px');
+    await expect(body).toHaveCSS('text-align', 'right');
+  });
+});
