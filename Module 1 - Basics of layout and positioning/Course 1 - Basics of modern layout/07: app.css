@@ -1,0 +1,163 @@
+/* Общие стили для body:
+1) Размер текста: 18 пикселей
+2) Цвет текста: #333
+
+Стили для заголовка h1:
+1) Внешний отступ сверху: 50 пикселей
+2) Внешний отступ снизу: 10 пикселей
+3) Размер текста: 60 пикселей
+4) Выравнивание текста: по центру
+
+Стили для заголовка h2:
+1) Внешний отступ сверху: 0 пикселей
+2) Внутренний отступ снизу: 30 пикселей
+3) Размер текста: 25 пикселей
+4) Выравнивание текста: по центру
+
+Стили для секций:
+1) Внешние отступы: по 50 пикселей сверху и снизу. 0 пикселей слева и справа
+2) Внутренние отступы: по 50 пикселей слева и справа. 0 пикселей сверху и снизу
+
+Стили для заголовков внутри секций:
+1) Внутренние отступы: 0 пикселей
+2) Выравнивание текста: по левому краю
+3) Граница отсутствует
+
+Стили для элементов списка:
+1) Внешний отступ снизу: 10 пикселей */
+
+body {
+  margin: 0;
+
+  color: #333;
+  font-size: 18px;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+h1 {
+  margin-top: 50px;
+  margin-bottom: 10px;
+
+  font-size: 60px;
+  text-align: center;
+}
+
+h2 {
+  margin-top: 0;
+  padding-bottom: 30px;
+
+  font-size: 25px;
+  text-align: center;
+
+  border-bottom: 2px solid #e3e3e3;
+}
+
+main {
+  width: 900px;
+  margin: auto;
+}
+
+section {
+  margin: 50px 0;
+  padding: 0 50px;
+}
+
+section h2 {
+  padding: 0;
+
+  text-align: left;
+
+  border: none;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Testing the CSS Cascade exercise', () => {
+
+  test('Main section must include 2 headers and 3 sections', async () => {
+    const main = page.locator('main');
+    const headerLvlOne = main.locator('> h1');
+    const headerLvlTwo = main.locator('> h2');
+    const sectionCount = await main.locator('> section').count();
+
+    await expect(main).toBeVisible();
+    await expect(headerLvlOne).toBeVisible();
+    await expect(headerLvlTwo).toBeVisible();
+    await expect(sectionCount).toEqual(3);
+  });
+
+  test('Each section should have a second-level header', async () => {
+    const sections = page.locator('main > section');
+    const sectionCount = await sections.count();
+
+    for(let i = 0; i < sectionCount; i+=1) {
+      const header = sections.nth(i).locator('> h2');
+      await expect(header).toBeVisible();
+    }
+  });
+
+  test('The styles of the body element must match the task', async () => {
+    const body = page.locator('body');
+
+    await expect(body).toHaveCSS('font-size', '18px');
+    await expect(body).toHaveCSS('line-height', '27px');
+    await expect(body).toHaveCSS('color', 'rgb(51, 51, 51)');
+  });
+
+  test('The styles of the h1 element must match the task', async () => {
+    const header = page.locator('h1');
+
+    await expect(header).toHaveCSS('font-size', '60px');
+    await expect(header).toHaveCSS('margin-top', '50px');
+    await expect(header).toHaveCSS('margin-bottom', '10px');
+    await expect(header).toHaveCSS('text-align', 'center');
+  });
+
+  test('The styles of the h2 element must match the task', async () => {
+    const header = page.locator('main > h2');
+
+    await expect(header).toHaveCSS('font-size', '25px');
+    await expect(header).toHaveCSS('margin-top', '0px');
+    await expect(header).toHaveCSS('padding-bottom', '30px');
+    await expect(header).toHaveCSS('text-align', 'center');
+  });
+
+  test('The styles of the section element must match the task', async () => {
+    const section = page.locator('main > section').first();
+
+    await expect(section).toHaveCSS('margin', '50px 0px');
+    await expect(section).toHaveCSS('padding', '0px 50px');
+  });
+
+  test('The styles of the h2 element inside the section must match the task', async () => {
+    const header = page.locator('main > section > h2').first();
+
+    await expect(header).toHaveCSS('padding', '0px');
+    await expect(header).toHaveCSS('border-style', 'none');
+    await expect(header).toHaveCSS('text-align', 'left');
+  });
+
+  test('The styles of the li element must match the task', async () => {
+    const listItem = page.locator('ul > li').first();
+
+    await expect(listItem).toHaveCSS('margin-bottom', '10px');
+  });
+});
