@@ -1,0 +1,143 @@
+<!-- Список дел
+Понедельник
+1) Бассейн — 9:30 - 10:30
+2) Магазин — 11:00 - 12:00
+3) Магазин — 12:00 - 13:00
+
+Вторник
+1) Бассейн — 9:30 - 10:30
+2) Съездить к Саше — 11:30 - 13:00
+
+Среда
+1) Бассейн — 9:30 - 10:30
+2) Уборка — 11:30 - 13:00
+
+Четверг
+1) Отвезти маму — 9:30 - 11:30
+
+Пятница
+1) Бассейн — 9:30 - 10:30
+2) Отвезти Ольгу — 11:30 - 13:00
+
+Суббота
+1) Гольф — 9:30 - 12:30
+
+Воскресенье
+1) Отдых — 9:30 - 13:00
+
+Все необходимые стили уже находятся внутри app.css. Необходимо сверстать только саму таблицу и, используя нужные классы и атрибуты, стилизовать её. 
+Внимательно присмотритесь к тому, сколько места занимает каждая из ячеек. -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Список дел на неделю</title>
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <table class="todo-table">
+    <thead>
+      <tr>
+        <th>Понедельник</th>
+        <th>Вторник</th>
+        <th>Среда</th>
+        <th>Четверг</th>
+        <th>Пятница</th>
+        <th>Суббота</th>
+        <th>Воскресенье</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="3" class="bg-blue">
+          <p class="todo-name">Бассейн</p>
+          <p class="todo-time">9:30 - 10:30</p>
+        </td>
+        <td rowspan="2" class="bg-orange">
+          <p class="todo-name">Отвезти маму</p>
+          <p class="todo-time">9:30 - 11:30</p>
+        </td>
+        <td class="bg-blue">
+          <p class="todo-name">Бассейн</p>
+          <p class="todo-time">9:30 - 10:30</p>
+        </td>
+        <td rowspan="2" class="bg-green">
+          <p class="todo-name">Гольф</p>
+          <p class="todo-time">9:30 - 12:30</p>
+        </td>
+        <td rowspan="3" class="bg-orange">
+          <p class="todo-name">Отдых</p>
+          <p class="todo-time">9:30 - 13:00</p>
+        </td>
+      </tr>
+      <tr>
+        <td class="bg-orange">
+          <p class="todo-name">Магазин</p>
+          <p class="todo-time">11:00 - 12:00</p>
+        </td>
+        <td rowspan="2" class="bg-blue">
+          <p class="todo-name">Съездить к Саше</p>
+          <p class="todo-time">11:30 - 13:00</p>
+        </td>
+        <td rowspan="2" class="bg-green">
+          <p class="todo-name">Уборка</p>
+          <p class="todo-time">11:30 - 13:00</p>
+        </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td class="bg-green">
+          <p class="todo-name">Магазин</p>
+          <p class="todo-time">12:00 - 13:00</p>
+        </td>
+        <td></td>
+        <td class="bg-green">
+          <p class="todo-name">Отвезти Ольгу</p>
+          <p class="todo-time">11:30 - 13:00</p>
+        </td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1280,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('ToDo Table', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('body')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
