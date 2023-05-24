@@ -1,0 +1,130 @@
+/* Реализуйте стили form-input по следующему ТЗ:
+1) Все дочерние элементы внутри класса form-input должны иметь блочное отображение и иметь ширину в 100%
+2) Текстовые поля имеют высоту 50 пикселей с внутренними отступами в 10 пикселей по вертикали и 20 пикселей по горизонтали.
+Для сохранения размеров измените поведение блочной модели с помощью свойства box-sizing со значением border-box. 
+Поля имеют сплошную границу в 1 пиксель и цветом #e2e2e2
+3) Поле для ввода сообщения имеет высоту 200 пикселей. Запретите пользователю управлять размерами этого поля */
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+
+  font: 18px/1.5 sans-serif;
+
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+}
+
+.form {
+  box-sizing: border-box;
+  width: 500px;
+  padding: 30px 80px;
+
+  background: #fff;
+
+  border-radius: 7px;
+}
+
+.form-input > * {
+  display: block;
+  width: 100%;
+}
+
+.form-input input,
+.form-input textarea {
+  box-sizing: border-box;
+  height: 50px;
+  padding: 10px 20px;
+
+  border: 1px solid #e2e2e2;
+}
+
+.form-input textarea {
+  height: 200px;
+
+  resize: none;
+}
+
+.btn {
+  padding: 15px 30px;
+
+  font-weight: bold;
+
+  border: none;
+
+  cursor: pointer;
+}
+
+.btn-green {
+  color: #fff;
+
+  background: #4caf50;
+}
+
+.block-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.mb-1 {
+  margin-bottom: 1em;
+}
+
+.mb-2 {
+  margin-bottom: 1.5em;
+}
+
+.small {
+  font-size: 14px;
+}
+
+.sr-only {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  padding: 0;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  border: 0;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Feedback Form Template', () => {
+  test('Form layout should be equal to template', async () => {
+    const template = await page
+      .locator('form')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
