@@ -1,0 +1,100 @@
+/* Секция .article делит текст на две колонки с отступом в 50 пикселей. Между колонками создайте вертикальную границу шириной 1 пиксель и цветом #3d405b
+Секция .applicants так же делит элементы на две колонки. Сама секция занимает все доступные колонки. 
+Заголовок внутри секции так же располагается на всю ширину блока. */
+
+html {
+  color: #463f3a;
+  font: 18px/1.5 sans-serif;
+}
+
+body {
+  width: 980px;
+  margin: 0 auto;
+  padding: 70px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  color: #e07a5f;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+
+  vertical-align: middle;
+}
+
+.article {
+  column-count: 2;
+  column-gap: 50px;
+  column-rule: 1px solid #3d405b;
+}
+
+.applicants {
+  margin: 50px 0;
+  padding: 20px;
+
+  color: #f4f1de;
+
+  column-count: 2;
+  column-span: all;
+
+  background: #3d405b;
+}
+
+.applicants-header {
+  column-span: all;
+}
+
+.member-name {
+  margin: 20px 0 0;
+
+  font-weight: bold;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1280,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Chess World Championship', () => {
+  test('Layout Test', async () => {
+    const template = await page
+      .locator('body')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
