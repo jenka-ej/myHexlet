@@ -1,0 +1,88 @@
+<!-- 1) Заголовок первого уровня внутри формы: «Обратная связь»
+2) Каждое текстовое поле формы лежит в обёртке с классом .form-input. Отступ снизу от каждой обёртки создаётся с помощью класса mb-2. 
+Для каждого текстового поля обязательно наличие label, который будет скрыт с помощью класса sr-only. Его реализация уже находится в файле app.css
+3) Чекбокс с принятием условий сервиса имеет обёртку с классами small и mb-1
+
+Обёртка (контейнер) — блок, внутри которого лежат элементы. Таким блоком зачастую является <div> или <section>. Например:
+
+<div class="container">
+  <p>Параграф 1</p>
+  <p>Параграф 2</p>
+  <p>Параграф 3</p>
+  <p>Параграф 4</p>
+</div>
+
+Для параграфов элемент с классом container будет являться обёрткой или контейнером
+
+Описание полей
+Для элементов input (кроме чекбокса) и textarea добавьте описания через атрибут placeholder
+1) Ваше имя
+2) Ваш Email
+3) Ваше сообщение -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Обратная связь</title>
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <form class="block-center form">
+    <h1>Обратная связь</h1>
+    <div class="form-input mb-2">
+      <label for="name" class="sr-only">Ваше имя</label>
+      <input type="text" id="name" placeholder="Ваше имя">
+    </div>
+    <div class="form-input mb-2">
+      <label for="email" class="sr-only">Email</label>
+      <input type="email" id="email" placeholder="Ваш Email">
+    </div>
+    <div class="form-input mb-2">
+      <label for="message" class="sr-only">Ваше сообщение</label>
+      <textarea id="message" placeholder="Ваше сообщение"></textarea>
+    </div>
+    <div class="small mb-1">
+      <label>
+        <input type="checkbox" name="accept" value="Accept Rule">
+        Я принимаю правила сервиса
+      </label>
+    </div>
+    <button class="btn btn-green">Отправить сообщение</button>
+  </form>
+</body>
+</html>
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Feedback Form Template', () => {
+  test('Form layout should be equal to template', async () => {
+    const template = await page
+      .locator('form')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
