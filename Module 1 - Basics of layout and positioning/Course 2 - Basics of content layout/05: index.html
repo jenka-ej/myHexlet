@@ -1,0 +1,159 @@
+<!-- Раздел HTML содержит маркированный список из двух элементов:
+1) Семантический HTML
+2) Доступность
+
+Для более подробного описания используется список определений:
+1) Семантический HTML — Разметка с помощью семантических тегов и Schema.org
+2) Доступность — Разметка страницы для людей с ограниченными возможностями
+Основной контейнер списка определений имеет класс .definitions. Название термина имеет класс .definitions-term. -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/app.css">
+  <title>Карта навыков верстальщика</title>
+</head>
+<body>
+  <main class="container">
+    <h1>Карта навыков верстальщика</h1>
+    <h2>Базовый уровень</h2>
+    <ol>
+      <li>
+        <h3>HTML</h3>
+        <ul>
+          <li>Семантический HTML</li>
+          <li>Доступность</li>
+        </ul>
+        <dl class="definitions">
+          <dt class="definitions-term">Семантический HTML</dt>
+            <dd>Разметка с помощью семантических тегов и Schema.org</dd>
+          <dt class="definitions-term">Доступность</dt>
+            <dd>Разметка страницы для людей с ограниченными возможностями</dd>
+        </dl>
+      </li>
+      <li>
+        <h3>CSS</h3>
+        <ul>
+          <li>
+            <h4>Основы</h4>
+            <ul>
+              <li>Селекторы</li>
+              <li>Каскадность</li>
+              <li>Базовые правила для работы с текстом</li>
+              <li>Базовая адаптивность с использованием медиазапросов</li>
+              <li>Базовая анимация с использованием transition</li>
+              <li>Псевдоклассы</li>
+              <li>Псевдоэлементы</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Модули</h4>
+            <ul>
+              <li>CSS Flexible Box Layout Module</li>
+              <li>CSS Grid Layout Module</li>
+              <li>CSS Multi-column Layout Module</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <h3>Инструменты</h3>
+        <ul>
+          <li>
+            <h4>HTML</h4>
+            <ul>
+              <li>PUG</li>
+              <li>Emmet</li>
+            </ul>
+          </li>
+          <li>
+            <h4>CSS</h4>
+            <ul>
+              <li>SASS</li>
+              <li>PostCSS</li>
+              <li>Stylelint</li>
+            </ul>
+          </li>
+          <li>
+            <h4>Другое</h4>
+            <ul>
+              <li>Bash</li>
+              <li>Git</li>
+              <li>NPM</li>
+              <li>DevTools</li>
+              <li>Code Editors (VSCode/Sublime Text/Atom/WebStorm)</li>
+              <li>Gulp</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ol>
+  </main>
+</body>
+</html>
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1280,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Layout Designer Road Map', () => {
+  test.describe('Definition Block Tests', () => {
+    test.describe.configure({ mode: 'serial' });
+
+    test('Definition block must be in document', async () => {
+      const dl = await page.locator('dl');
+      const dt = await page.locator('dt');
+
+      await expect(dl).toBeVisible();
+      await expect(dt).toHaveCount(2);
+    });
+
+    test('Definition block must have class «definitions»', async () => {
+      const dl = await page.locator('dl');
+
+      await expect(dl).toHaveAttribute('class', 'definitions');
+    });
+
+    test('Definition Term must have class definitions-term', async () => {
+      const dt = await page.locator('dt').first();
+
+      await expect(dt).toHaveAttribute('class', 'definitions-term');
+    });
+
+  });
+
+
+  test('Road Map layout should be equal to template', async () => {
+    const template = await page
+      .locator('body')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
