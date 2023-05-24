@@ -1,0 +1,135 @@
+/* Общие стили
+1) Для элемента html установите размер шрифта 18 пикселей с полуторным межстрочным интервалом. Установите шрифт без засечек. Фон имеет значение #1d2026. 
+Основной цвет текста #8a94a7
+2) Элемент body должен занимать всю доступную ширину и высоту страницы. Дополнительно сбросьте все значения внешних и внутренних отступов
+3) Заголовки первых трёх уровней не имеют внешних отступов. Внутренние отступы сверху и снизу должны быть равны размеру шрифта у элемента html
+4) Список не имеет внешних отступов. Внутренние отступы сверху и снизу равны базовому значению шрифта
+
+Стили карточки прайсинга
+1) Основная обёртка с классом .card имеет ширину в 300 пикселей. Внутренние отступы сверху и снизу в 2.5 раза больше размера шрифта html. 
+Слева и справа — в 2 раза больше размера шрифта html. Блок должен иметь фон #2c3039
+2) Список с классом .card-list имеет размер шрифта 14 пикселей
+3) Блок .price имеет размер шрифта 18 пикселей и межстрочный интервал 1. Элемент span внутри блока имеет белый цвет и размер шрифта в три раза больше, чем у родителя
+4) Заголовок третьего уровня имеет белый цвет и должен быть размером 0.9 от значения родителя
+5) Кнопка с классом .btn имеет размер шрифта в 0.7 от размера шрифта у элемента html */
+
+html {
+  color: #8a94a7;
+  font: 18px/1.5 sans-serif;
+
+  background: #1d2026;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  padding: 1rem 0;
+}
+
+ul {
+  margin: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.card {
+  width: 300px;
+  padding: 2.5rem 2rem;
+
+  background: #2c3039;
+}
+
+.card-list {
+  font-size: 14px;
+}
+
+.price {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.price span {
+  color: #fff;
+  font-size: 3em;
+}
+
+.card h3 {
+  color: #fff;
+  font-size: 0.9em;
+}
+
+.btn {
+  display: block;
+  padding: 1em 0;
+
+  color: white;
+
+  font-size: 0.7rem;
+
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.btn-blue {
+  background-color: #097dea;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgb(138 148 167 / 24%);
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 800,
+    height: 600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Hexlet Pricing Template', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
