@@ -1,6 +1,8 @@
 // Реализуйте класс TcpConnection в соответствии с примером выше. Все варианты поведения можно увидеть в тестах. 
 // Для изменения состояния вам понадобится дополнительная внутренняя логика. Реализуйте её по своему усмотрению.
 
+// first version
+
 export default class TcpConnection {
   constructor() {
     this.state = 'disconnected';
@@ -29,6 +31,92 @@ export default class TcpConnection {
       return;
     }
     throw new Error('TCP is already disconnected');
+  }
+}
+
+// second version
+
+/* Connected.js */
+
+export default class Connected {
+  constructor(tcp) {
+    this.tcp = tcp;
+  }
+
+  connect() {
+    if (this.tcp.getCurrentState() === 'connected') {
+      throw new Error('TCP is already connected');
+    }
+  }
+
+  disconnect() {
+  }
+
+  getCurrentState() {
+    return 'connected';
+  }
+
+  write() {
+  }
+}
+
+/* Disconnected.js */
+
+export default class Disconnected {
+  constructor(tcp) {
+    this.tcp = tcp;
+  }
+
+  connect() {
+
+  }
+
+  disconnect() {
+    if (this.tcp.getCurrentState() === 'disconnected') {
+      throw new Error('TCP is already disconnected');
+    }
+  }
+
+  getCurrentState() {
+    return 'disconnected';
+  }
+
+  write() {
+    throw new Error('TCP is already disconnected');
+  }
+}
+
+/* TcpConnection.js */
+
+import DisconnectedState from './states/Disconnected.js';
+import ConnectedState from './states/Connected.js';
+
+export default class TcpConnection {
+  constructor() {
+    this.states = {
+      Disconnected: DisconnectedState,
+      Connected: ConnectedState,
+    };
+
+    this.state = new this.states.Disconnected(this);
+  }
+
+  connect() {
+    this.state.connect();
+    this.state = new this.states.Connected(this);
+  }
+
+  disconnect() {
+    this.state.disconnect();
+    this.state = new this.states.Disconnected(this);
+  }
+
+  getCurrentState() {
+    return this.state.getCurrentState();
+  }
+
+  write() {
+    return this.state.write();
   }
 }
 
