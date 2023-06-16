@@ -28,6 +28,24 @@ export const customErrorCatcher = (errorHandler, errorInstance) => (error) => {
   throw new Error(error);
 };
 
+/* runCode.js */
+// Реализуйте и экспортируйте по умолчанию функцию, которая имеет следующие параметры:
+// 1) action - функция, которую нужно выполнить. Обязательный
+// 2) catcher - обработчик ошибки из catcher.js, в качестве параметра принимает ошибку. Необязательный
+// Общий принцип работы таков: функция принимает в себя экшен, пытается его выполнить и возвращает либо результат выполнения, 
+// либо передаёт ошибку в catcher и возвращает его результат (если catcher не задан, выбрасывает ошибку как есть).
+
+export default (action, catcher = null) => {
+  try {
+    return action();
+  } catch (err) {
+    if (catcher === null) {
+      throw new Error(err);
+    }
+    return catcher(err);
+  }
+};
+
 /* errors/AppAPINetworkError.js */
 
 import AppNetworkError from './AppNetworkError.js';
