@@ -35,6 +35,22 @@ export default (cards, customRandom = random) => (name1, name2) => (
   run(name1, name2, cards, customRandom)
 );
 
+/* simpleCard.js */
+// Реализуйте интерфейс типа simpleCard по аналогии с типом percentCard.
+
+const make = (name, damage) => (message) => {
+  switch (message) {
+    case 'getName':
+      return name;
+    case 'damage':
+      return damage;
+    default:
+      return 'undefined method';
+  }
+};
+
+export default make;
+
 /* __tests__ */
 
 import { car, cdr, toString as pairToString } from '@hexlet/pairs';
