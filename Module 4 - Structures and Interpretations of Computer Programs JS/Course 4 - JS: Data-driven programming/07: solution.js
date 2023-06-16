@@ -57,6 +57,16 @@ export default (cards, customRandom = random) => (
   (name1, name2) => run(name1, name2, cards, customRandom)
 );
 
+/* simpleCard.js */
+// Реализуйте интерфейс типа simpleCard, основываясь на реализации типа percentCard.
+
+const make = (name, linear) => ({
+  name,
+  damage: () => linear,
+});
+
+export default make;
+
 /* __tests__ */
 
 import { l, length, get } from '@hexlet/pairs-data';
