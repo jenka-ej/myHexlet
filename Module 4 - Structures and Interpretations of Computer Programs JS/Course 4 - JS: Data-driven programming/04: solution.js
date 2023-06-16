@@ -52,6 +52,18 @@ export default (cards, customRandom = random) => {
   return inner;
 };
 
+/* simpleCard.js */
+// Реализуйте интерфейс работы карты с типом SimpleCard по аналогии с типом PercentCard. Второй параметр у конструктора - урон.
+
+import { cons, car, cdr, toString as pairToString } from '@hexlet/pairs'; // eslint-disable-line
+import { attach, contents } from '@hexlet/tagged-types';
+
+export const make = (name, linear) => attach('SimpleCard', cons(name, linear));
+
+export const getName = (self) => car(contents(self));
+
+export const damage = (self) => cdr(contents(self));
+
 /* __tests__ */
 
 import { car, toString as pairToString } from '@hexlet/pairs';
