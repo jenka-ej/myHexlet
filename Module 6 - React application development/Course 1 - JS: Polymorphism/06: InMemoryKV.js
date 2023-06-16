@@ -28,6 +28,22 @@ export default class InMemoryKV {
   }
 }
 
+/* keyValueFunctions.js */
+// Реализуйте и экспортируйте по умолчанию функцию, которая принимает на вход объект базы данных и меняет в нём ключи и значения местами.
+// swapKeyValue — полиморфная функция, она может работать с любой реализацией key-value, имеющей такой же интерфейс.
+
+export default (obj) => {
+  const temp = {};
+  Object.entries(obj.toObject())
+    .forEach(([key, value]) => {
+      temp[value] = key;
+    });
+  Object.values(temp)
+    .forEach((value) => obj.unset(value));
+  Object.entries(temp)
+    .forEach(([key, value]) => obj.set(key, value));
+};
+
 /* __tests__/InMemoryKV.test.js */
 
 import _ from 'lodash';
