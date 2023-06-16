@@ -21,6 +21,34 @@ export default class {
   }
 }
 
+/* JsonParser.js */
+// Реализуйте класс, отвечающий за парсинг json. Используйте внутри JSON.parse().
+
+export default class JsonParser {
+  constructor(file) {
+    this.file = file;
+  }
+
+  parse() {
+    return JSON.parse(this.file);
+  }
+}
+
+/* YamlParser.js */
+// Реализуйте класс, отвечающий за парсинг yaml. Для парсинга используется сторонний компонент js-yaml. Используйте метод load().
+
+import yaml from 'js-yaml';
+
+export default class YamlParser {
+  constructor(file) {
+    this.file = file;
+  }
+
+  parse() {
+    return yaml.load(this.file);
+  }
+}
+
 /* __fixtures__/test.yml */
 
 {
