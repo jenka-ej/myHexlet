@@ -21,6 +21,33 @@ export const definer = (type) => (methodName, f) => {
   methods = consList(attach(type, cons(methodName, f)), methods);
 };
 
+/* card.js */
+// Реализуйте и экспортируйте обобщенную функцию damage() отвечающую за вычисление нанесённого урона.
+
+import { contents } from '@hexlet/tagged-types';
+import { getMethod } from './generic.js';
+
+export const getName = (self) => getMethod(self, 'getName')(contents(self));
+
+export const damage = (self, health) => getMethod(self, 'damage')(contents(self), health);
+
+/* simpleCard.js */
+// Реализуйте интерфейс типа SimpleCard.
+
+import { cons, car, cdr, toString as pairToString } from '@hexlet/pairs'; // eslint-disable-line
+import { attach } from '@hexlet/tagged-types';
+import { definer } from './generic.js';
+
+const defmethod = definer('SimpleCard');
+
+const make = (name, linear) => attach('SimpleCard', cons(name, linear));
+
+export default make;
+
+defmethod('getName', (self) => car(self));
+
+defmethod('damage', (self) => cdr(self));
+
 /* __tests__ */
 
 import { car, cdr, toString as pairToString } from '@hexlet/pairs';
