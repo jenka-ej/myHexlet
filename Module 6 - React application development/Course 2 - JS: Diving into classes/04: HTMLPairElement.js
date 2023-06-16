@@ -27,6 +27,19 @@ class HTMLPairElement extends HTMLElement {
 }
 export default HTMLPairElement;
 
+/* HTMLDivElement.js */
+// Реализуйте класс HTMLDivElement, который описывает собой парный тег <div>.
+
+import HTMLPairElement from './HTMLPairElement.js';
+
+class HTMLDivElement extends HTMLPairElement {
+  getTagName() {
+    return 'div';
+  }
+}
+
+export default HTMLDivElement;
+
 /* HTMLElement.js */
 
 export default class HTMLElement {
