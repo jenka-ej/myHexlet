@@ -19,6 +19,48 @@ function Point(x, y) {
 
 export default Point;
 
+/* Segment.js */
+// Реализуйте и экспортируйте по умолчанию функцию-конструктор Segment с двумя свойствами beginPoint и endPoint 
+// и геттеры для извлечения этих свойств: getBeginPoint и getEndPoint.
+
+function getBeginPoint() {
+  return this.beginPoint;
+}
+
+function getEndPoint() {
+  return this.endPoint;
+}
+
+function Segment(beginPoint, endPoint) {
+  this.beginPoint = beginPoint;
+  this.endPoint = endPoint;
+  this.getBeginPoint = getBeginPoint;
+  this.getEndPoint = getEndPoint;
+}
+
+export default Segment;
+
+/* solution.js */
+// Реализуйте и экспортируйте по умолчанию функцию, которая принимает на вход отрезок и возвращает новый отрезок с точками, 
+// добавленными в обратном порядке (begin меняется местами с end).
+// Точки в результирующем отрезке должны быть копиями (по значению) соответствующих точек исходного отрезка. 
+// То есть они не должны быть ссылкой на один и тот же объект, так как это разные объекты (пускай и с одинаковыми координатами). 
+// Для создания копий используйте соответствующие конструкторы.
+
+import Point from './Point.js';
+import Segment from './Segment.js';
+
+const reverse = (segment) => {
+  const beginPoint = segment.getBeginPoint();
+  const endPoint = segment.getEndPoint();
+  const newBeginPoint = new Point(endPoint.getX(), endPoint.getY());
+  const newEndPoint = new Point(beginPoint.getX(), beginPoint.getY());
+
+  return new Segment(newBeginPoint, newEndPoint);
+};
+
+export default reverse;
+
 /* __tests__ */
 
 import Segment from '../Segment.js';
