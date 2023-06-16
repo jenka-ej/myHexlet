@@ -17,6 +17,26 @@ Point.prototype.toString = function toString() {
   return `(${this.getX()}, ${this.getY()})`;
 };
 
+/* Segment.js */
+// Реализуйте метод toString(), который преобразует отрезок к строке в соответствии с примером ниже:
+
+export default function Segment(beginPoint, endPoint) {
+  this.beginPoint = beginPoint;
+  this.endPoint = endPoint;
+}
+
+Segment.prototype.getBeginPoint = function getBeginPoint() {
+  return this.beginPoint;
+};
+
+Segment.prototype.getEndPoint = function getEndPoint() {
+  return this.endPoint;
+};
+
+Segment.prototype.toString = function toString() {
+  return `[${this.getBeginPoint()}, ${this.getEndPoint()}]`;
+};
+
 /* __tests__ */
 
 import Segment from '../Segment.js';
