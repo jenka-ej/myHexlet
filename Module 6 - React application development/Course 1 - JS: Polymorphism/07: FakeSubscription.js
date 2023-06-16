@@ -16,6 +16,46 @@ export default class FakeSubscription {
   }
 }
 
+/* User.js */
+// Допишите конструктор пользователя, так, чтобы внутри устанавливалась реальная подписка если она передана снаружи и создавалась фейковая в ином случае.
+
+import FakeSubscription from './FakeSubscription.js';
+
+class User {
+  constructor(email, currentSubscription = null) {
+    this.email = email;
+    this.currentSubscription = currentSubscription ?? new FakeSubscription(this);
+  }
+
+  getCurrentSubscription() {
+    return this.currentSubscription;
+  }
+
+  isAdmin() {
+    return this.email === 'rakhim@hexlet.io';
+  }
+}
+
+export default User;
+
+/* Subscription.js */
+
+class Subscription {
+  constructor(subscriptionPlanName) {
+    this.subscriptionPlanName = subscriptionPlanName;
+  }
+
+  hasProfessionalAccess() {
+    return this.subscriptionPlanName === 'professional';
+  }
+
+  hasPremiumAccess() {
+    return this.subscriptionPlanName === 'premium';
+  }
+}
+
+export default Subscription;
+
 /* __tests__ */
 
 import Subscription from '../Subscription.js';
