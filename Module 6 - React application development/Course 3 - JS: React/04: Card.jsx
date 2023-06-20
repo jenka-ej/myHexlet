@@ -28,8 +28,7 @@ import React from 'react';
 
 export default class Card extends React.Component {
   render() {
-    const { title } = this.props;
-    const { text } = this.props;
+    const { title, text } = this.props;
     return (
       <div className="card">
         <div className="card-body">
