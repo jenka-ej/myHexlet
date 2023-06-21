@@ -21,7 +21,15 @@ export default class Progress extends React.Component {
     };
     return (
       <div className="progress">
-        <div className="progress-bar" role="progressbar" aria-valuenow={percentage} aria-valuemin="0" aria-valuemax="100" aria-label="progressbar" style={styleValue} />
+        <div
+          className="progress-bar"
+          role="progressbar"
+          aria-valuenow={percentage}
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-label="progressbar"
+          style={styleValue}
+        />
       </div>
     );
   }
