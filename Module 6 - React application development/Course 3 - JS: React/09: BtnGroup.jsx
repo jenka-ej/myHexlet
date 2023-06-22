@@ -19,21 +19,17 @@ import React from 'react';
 export default class BtnGroup extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { left: '', right: '' };
+    this.state = { button: null };
   }
 
-  onChangeClassLeft = () => {
-    this.setState(() => ({ left: 'active', right: '' }));
-  };
+  onChangeClassLeft = () => this.setState(() => ({ button: 'left' }));
 
-  onChangeClassRight = () => {
-    this.setState(() => ({ left: '', right: 'active' }));
-  };
+  onChangeClassRight = () => this.setState(() => ({ button: 'right' }));
 
   render() {
-    const { left, right } = this.state;
-    const leftValue = cn('btn btn-secondary left', `${left}`);
-    const rightValue = cn('btn btn-secondary right', `${right}`);
+    const { button } = this.state;
+    const leftValue = cn('btn btn-secondary left', { active: button === 'left' });
+    const rightValue = cn('btn btn-secondary right', { active: button === 'right' });
     return (
       <div className="btn-group" role="group">
         <button type="button" className={leftValue} onClick={this.onChangeClassLeft}>Left</button>
