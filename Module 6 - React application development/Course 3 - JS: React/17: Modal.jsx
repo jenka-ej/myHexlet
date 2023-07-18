@@ -88,15 +88,15 @@ export default class Modal extends React.Component {
   render() {
     const { children, isOpen } = this.props;
     const modalClass = cn({
-      modal: !isOpen,
-      'modal fade show': isOpen,
+      modal: true,
+      fade: isOpen,
+      show: isOpen,
     });
-    const modalStyle = cn({
-      none: !isOpen,
-      block: isOpen,
-    });
+    const modalStyle = {
+      display: isOpen ? 'block' : 'none',
+    };
     return (
-      <div className={modalClass} style={{ display: `${modalStyle}` }} role="dialog">
+      <div className={modalClass} style={modalStyle} role="dialog">
         <div className="modal-dialog">
           <div className="modal-content">
             {children}
