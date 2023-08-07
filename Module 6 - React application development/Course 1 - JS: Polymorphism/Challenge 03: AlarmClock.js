@@ -92,8 +92,7 @@ export default class AlarmClock {
         return null;
       case 'bell':
         this.hourPlus()[currentMode]();
-        this.mode.currentMode = 'clock';
-        this.bellState.ring = false;
+        this.changeBellToClockState();
         return null;
       default:
         return null;
@@ -113,8 +112,7 @@ export default class AlarmClock {
         return null;
       case 'bell':
         this.minutePlus()[currentMode]();
-        this.mode.currentMode = 'clock';
-        this.bellState.ring = false;
+        this.changeBellToClockState();
         return null;
       default:
         return null;
@@ -123,15 +121,22 @@ export default class AlarmClock {
 
   tick() {
     const currentMode = this.getCurrentMode();
-    if (currentMode === 'bell') {
-      this.minutePlus()[currentMode]('unit');
-      this.mode.currentMode = 'clock';
-      this.bellState.ring = false;
-    } else {
-      this.minutePlus().clock('unit');
-      this.checkBell();
+    switch (currentMode) {
+      case 'clock':
+        this.minutePlus().clock('unit');
+        this.checkBell();
+        return null;
+      case 'alarm':
+        this.minutePlus().clock('unit');
+        this.checkBell();
+        return null;
+      case 'bell':
+        this.minutePlus()[currentMode]('unit');
+        this.changeBellToClockState();
+        return null;
+      default:
+        return null;
     }
-    return null;
   }
 
   checkBell() {
@@ -140,6 +145,11 @@ export default class AlarmClock {
       this.bellState.ring = true;
     }
     return null;
+  }
+
+  changeBellToClockState() {
+    this.mode.currentMode = 'clock';
+    this.bellState.ring = false;
   }
 
   minutePlus() {
