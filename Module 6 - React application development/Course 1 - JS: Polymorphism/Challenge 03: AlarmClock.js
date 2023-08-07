@@ -65,8 +65,10 @@ export default class AlarmClock {
       case 'alarm':
         this.mode.currentMode = 'clock';
         return null;
-      default:
+      case 'bell':
         this.mode.currentMode = 'clock';
+        return null;
+      default:
         return null;
     }
   }
