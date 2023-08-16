@@ -188,7 +188,6 @@ const Add = ({ props }) => {
     onSubmit: () => {
       const newTask = { name: formik.values.body, id: _.uniqueId() };
       changeState(() => ({ tasks: [...tasks, newTask], currentTask }));
-      formik.values.body = '';
       handleClose();
     },
   });
