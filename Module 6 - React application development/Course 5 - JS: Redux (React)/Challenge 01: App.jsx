@@ -94,7 +94,6 @@ const App = ({
   text,
   tasks,
 }) => {
-
   const handleAddTask = (e) => {
     e.preventDefault();
     const task = { text, id: _.uniqueId() };
