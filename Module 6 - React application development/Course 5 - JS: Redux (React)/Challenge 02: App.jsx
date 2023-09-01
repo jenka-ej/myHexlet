@@ -162,9 +162,9 @@ test('Store', async () => {
     const { text } = store.getState();
     rerender(<App
       dispatch={store.dispatch}
+      text={text}
       updateText={updateText}
       resetText={resetText}
-      text={text}
     />);
   });
 
