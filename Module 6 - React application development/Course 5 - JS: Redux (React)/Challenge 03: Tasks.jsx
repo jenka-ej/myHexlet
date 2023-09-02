@@ -44,7 +44,6 @@ const actionCreators = {
 const Tasks = ({
   inverseTaskTheme,
   tasksUIState,
-  tasks,
 }) => {
   const { byId, allIds } = tasks;
   if (allIds.length === 0) {
