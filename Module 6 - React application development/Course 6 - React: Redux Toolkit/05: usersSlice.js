@@ -27,7 +27,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const selectors = usersAdapter.getSelectors((state) => state.usersReducer);
+export const selectors = usersAdapter.getSelectors((state) => state.users);
 export const { actions } = usersSlice;
 export default usersSlice.reducer;
 
@@ -48,7 +48,7 @@ const commentsSlice = createSlice({
   },
 });
 
-export const selectors = commentsAdapter.getSelectors((state) => state.commentsReducer);
+export const selectors = commentsAdapter.getSelectors((state) => state.comments);
 export const { actions } = commentsSlice;
 export default commentsSlice.reducer;
 
@@ -70,7 +70,7 @@ const postsSlice = createSlice({
   },
 });
 
-export const selectors = postsAdapter.getSelectors((state) => state.postsReducer);
+export const selectors = postsAdapter.getSelectors((state) => state.posts);
 export const { actions } = postsSlice;
 export default postsSlice.reducer;
 
@@ -83,9 +83,9 @@ import usersReducer from './usersSlice.js';
 
 export default configureStore({
   reducer: {
-    postsReducer,
-    commentsReducer,
-    usersReducer,
+    posts: postsReducer,
+    comments: commentsReducer,
+    users: usersReducer,
   },
 });
 
