@@ -1,0 +1,100 @@
+/* Оформите небольшую страницу со статьями. Для решения задачи используйте селекторы, изученные не только в этом уроке, но и в прошлых
+Все заголовки 1, 2 и 3 уровня имеют цвет #212121
+Остальные изменения вносятся внутри элемента с классом articles:
+1) Заголовки первого уровня имеют размер шрифта в 2em
+2) Заголовки второго уровня имеют размер шрифта в 1.5em
+3) Заголовки третьего уровня имеют размер шрифта в 1em
+4) Элемент <article> имеет сплошную границу сверху с цветом #e5e5e5. Ширина границы: 1px
+
+Отдельно стилизуется первый параграф после заголовка третьего уровня:
+1) Внутренние отступы: 20px со всех сторон
+2) Цвет текста: #686868
+3) Текст выровнен по правому краю
+4) Размер текста: 0.8em
+5) Фон: #f6f6f6 */
+
+body {
+  padding: 50px 0;
+
+  font: 22px/1.5 sans-serif;
+
+  background: #d3cce3;
+  background: linear-gradient(to right, #d3cce3, #e9e4f0);
+}
+
+h1,
+h2,
+h3 {
+  color: #212121;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+article {
+  border-top: 1px solid #e5e5e5;
+}
+
+.articles {
+  width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+
+  background: #fff;
+  border-radius: 10px;
+}
+
+article > h3 + p {
+  padding: 20px;
+  color: #686868;
+  text-align: right;
+  font-size: 0.8em;
+  background-color: #f6f6f6;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1280,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Articles Page Template', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
