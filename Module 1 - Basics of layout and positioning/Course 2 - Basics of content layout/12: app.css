@@ -1,0 +1,68 @@
+/* В этом задании, используя изученные псевдоклассы, вам предстоит создать поля шахматной доски.
+Вёрстка и основные стили шахматной доски уже доступны в соответствующих файлах. Осталось только покрасить необходимые клетки в светлый цвет #f1d9b5. */
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+
+  font: 18px/1.5 sans-serif;
+}
+
+.chessboard {
+  width: 500px;
+  height: 500px;
+
+  background: #b58763;
+
+  border-collapse: collapse;
+}
+
+.chessboard tr:nth-of-type(odd) td:nth-of-type(odd) {
+  background: #f1d9b5;
+}
+
+.chessboard tr:nth-of-type(even) td:nth-of-type(even) {
+  background: #f1d9b5;
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1280,
+    height: 1600,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Chess Board Component', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('table')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
