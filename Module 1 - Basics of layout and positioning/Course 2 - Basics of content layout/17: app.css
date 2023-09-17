@@ -1,0 +1,65 @@
+/* Создайте повторяющийся паттерн следующего вида:
+1) Направление: 45 градусов
+2) Прозрачный цвет занимает первые 100 пикселей
+3) Фиолетовый цвет занимает следующие 100 пикселей */
+
+:root {
+  --transparent: transparent;
+  --purple: #9c27b0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--transparent) 0,
+      var(--transparent) 100px,
+      var(--purple) 100px,
+      var(--purple) 200px
+    );
+}
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 90,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1200,
+    height: 900,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Pattern Gradient', () => {
+  test('Pattern Gradient layout should be equal to template', async () => {
+    const template = await page
+      .locator('body')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
