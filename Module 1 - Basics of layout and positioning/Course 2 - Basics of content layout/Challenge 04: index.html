@@ -164,6 +164,7 @@ h2 {
 
 .tab-name {
   display: block;
+  break-inside: avoid;
   padding: 20px;
   text-align: center;
   text-decoration: none;
@@ -182,39 +183,17 @@ h2 {
   padding: 20px;
 }
 
-a[data-tab="html"]:hover ~ div > section[data-tab-content="html"] {
-  display: block;
-}
-
-a[data-tab="css"]:hover ~ div > section[data-tab-content="css"] {
-  display: block;
-}
-
-a[data-tab="js"]:hover ~ div > section[data-tab-content="js"] {
-  display: block;
-}
-
-a[data-tab="html"]:focus ~ div > section[data-tab-content="html"] {
-  display: block;
-}
-
-a[data-tab="css"]:focus ~ div > section[data-tab-content="css"] {
-  display: block;
-}
-
+a[data-tab="html"]:hover ~ div > section[data-tab-content="html"],
+a[data-tab="css"]:hover ~ div > section[data-tab-content="css"],
+a[data-tab="js"]:hover ~ div > section[data-tab-content="js"],
+a[data-tab="html"]:focus ~ div > section[data-tab-content="html"],
+a[data-tab="css"]:focus ~ div > section[data-tab-content="css"],
 a[data-tab="js"]:focus ~ div > section[data-tab-content="js"] {
   display: block;
 }
 
-a[data-tab="html"]:hover,
-a[data-tab="css"]:hover,
-a[data-tab="js"]:hover {
-  border-bottom: 3px solid #5ffbf1;
-}
-
-a[data-tab="html"]:focus,
-a[data-tab="css"]:focus,
-a[data-tab="js"]:focus {
+.tab-name:hover,
+.tab-name:focus {
   border-bottom: 3px solid #5ffbf1;
 }
 
