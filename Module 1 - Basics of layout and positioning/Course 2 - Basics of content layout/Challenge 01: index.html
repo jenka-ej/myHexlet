@@ -1,0 +1,218 @@
+<!-- Реализуйте калькулятор. В шаблоне реализовано центрирование калькулятора по всем осям. Подробнее это вы изучите в курсе по Flex.
+
+Стили обёртки:
+1) Ширина: 300 пикселей
+2) Цвет фона: #2c3e50
+3) Шрифт: Roboto Mono. Файлы шрифтов находятся в директории assets
+4) Стили блока с результатом вычислений
+5) Внутренние отступы: по 30 пикселей
+6) Цвет текста: белый
+7) Цвет фона: #505c68
+8) Выравнивание по правому краю
+
+Внутри располагается два параграфа:
+1) Выражение имеет цвет #ced4d9 и размер шрифта в 80%
+2) Результат вычисления имеет шрифт размером 3em
+3) Параграфы имеют отступы по 5 пикселей сверху и снизу
+
+Стили кнопок:
+Создайте обёртку под каждую строчку с кнопками. Внутри строчки равномерно размещается по 4 элемента:
+1) Высота кнопок: 75px
+2) Кнопки являются блочным элементом. Используйте свойство display со значением block
+3) Размер шрифта: 1.2em
+4) Сбросьте стандартные стили кнопок. Это свойства border и background
+5) Установите курсор pointer. Для этого используйте свойство cursor
+6) При наведении на кнопку её фон меняется на #364c63
+7) Кнопка Delete имеет размер шрифта в 80%
+8) Каждая четвёртая кнопка в строке имеет синий цвет. Для этого в CSS файле существуют стили для класса .bg-blue.
+
+Используйте спецсимволы HTML для встраивания правильных символов. Это делается с помощью специальных мнемоник — конструкций,
+которые сообщают браузеру отобразить символ, которого нет в стандартной раскладке клавиатуры.
+Эти символы вставляются напрямую в HTML разметку. Каждая мнемоника имеет определённый синтаксис: начинается с амперсанда & и заканчивается точкой с запятой ;
+1) Минус: &minus;
+2) Плюс-минус: &plusmn;
+3) Деление: &divide;
+4) Умножение: &times; -->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/app.css">
+  <title>Калькулятор</title>
+</head>
+<body>
+  <div class="calculation">
+    <div class="calculator-result">
+      <p class="calculator-expression">30 &times; 21</p>
+      <p class="calculator-number">630</p>
+    </div>
+    <div class="calculator-body">
+      <div class="calculator-line">
+        <button class="calculator-item">C</button>
+        <button class="calculator-item">&plusmn;</button>
+        <button class="calculator-item">%</button>
+        <button class="calculator-item bg-blue">&divide;</button>
+      </div>
+      <div class="calculator-line">
+        <button class="calculator-item">1</button>
+        <button class="calculator-item">2</button>
+        <button class="calculator-item">3</button>
+        <button class="calculator-item bg-blue">&times;</button>
+      </div>
+      <div class="calculator-line">
+        <button class="calculator-item">4</button>
+        <button class="calculator-item">5</button>
+        <button class="calculator-item">6</button>
+        <button class="calculator-item bg-blue">&minus;</button>
+      </div>
+      <div class="calculator-line">
+        <button class="calculator-item">7</button>
+        <button class="calculator-item">8</button>
+        <button class="calculator-item">9</button>
+        <button class="calculator-item bg-blue">+</button>
+      </div>
+      <div class="calculator-line">
+        <button class="calculator-item">0</button>
+        <button class="calculator-item">.</button>
+        <button class="calculator-item small">Delete</button>
+        <button class="calculator-item bg-blue">=</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+
+<!-- ./styles/app.css -->
+
+@font-face {
+  font-weight: 400;
+  font-family: "Roboto Mono";
+  src: url("../assets/fonts/RobotoMono-Regular.woff2") format("woff2");
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+
+  font-family: "Roboto Mono", monospace;
+
+  background: #333131;
+}
+
+p {
+  margin: 5px 0;
+}
+
+.calculation {
+  width: 300px;
+  background-color: #2c3e50;
+}
+
+.calculator-result {
+  padding: 30px;
+  color: white;
+  background-color: #505c68;
+  text-align: right;
+}
+
+.calculator-expression {
+  color: #ced4d9;
+  font-size: 80%;
+}
+
+.calculator-number {
+  font-size: 3em;
+}
+
+.calculator-line {
+  column-count: 4;
+  column-gap: 0;
+}
+
+.calculator-item {
+  display: block;
+  width: 100%;
+  height: 75px;
+  font-size: 1.2em;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  color: white;
+  font-family: inherit;
+}
+
+.calculator-item:hover {
+  background-color: #364c63;
+}
+
+.small {
+  font-size: 80%;
+}
+
+.bg-blue {
+  background: #3498db;
+}
+
+.bg-blue:hover {
+  background: #67b2e4;
+}
+
+.text-big {
+  font-size: 3em;
+}
+
+.text-gray {
+  color: #ced4d9;
+}
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Calculator Template', () => {
+  test.describe.configure({ mode: 'serial' });
+
+  test('Calculator Template', async () => {
+    const screenshot = await page
+      .locator('.calculation')
+      .screenshot(settings.screenshot);
+
+    expect(screenshot).toMatchSnapshot();
+  });
+
+  test('Calculator Template. Hover button', async () => {
+    await page.hover('button');
+
+    const screenshot = await page
+      .locator('.calculation')
+      .screenshot(settings.screenshot);
+
+    expect(screenshot).toMatchSnapshot();
+  });
+});
