@@ -1,0 +1,269 @@
+<!-- Календари очень часто используются на веб-страницах. Их реализация бывает невероятно разнообразной.
+Такое испытание можно вставить в любой курс и получить совершенно разные варианты вёрстки.
+В этом испытании вы реализуете календарь с использованием максимально доступных средств.
+
+Основные стили календаря:
+1) Цвет текста: #fff
+2) Размер шрифта: 16px
+3) Межстрочный интервал: 1
+4) Шрифт: Rubik. Файлы шрифтов находятся в директории assets
+5) Цвет фона: #e5e5e5
+
+Обёртка:
+1) Ширина: 250px
+2) Внутренние отступы: 60 пикселей сверху, справа и слева. 30 пикселей снизу
+3) Фон: #1e1f25
+4) Закругление: 12px
+
+Заголовок второго уровня:
+1) Внешний отступ снизу: 30px. Отступы с остальных сторон: 0px
+2) Жирное начертание
+3) Размер шрифта: 16px
+
+Календарь:
+1) Внешний отступ снизу: 30px
+2) Внутренний отступ снизу: 20px
+3) Размер шрифта: 14px с межстрочным интервалом 2
+4) Граница снизу с цветом #313131 и размером 1 пиксель
+
+Ячейки с числами:
+1) Цвет чисел: #ccc с выравниванием по центру.
+2) Внутренний отступ у чисел: 0
+3) Межстрочный интервал: 2.3
+
+Список дел:
+1) Внешние отступы у названия: 5px сверху и 20 пикселей снизу
+2) Размер шрифта названия дела: 14px
+3) Цвет времени: #ccc
+4) Размер шрифта времени: 10px
+5) Сбросьте внешние и внутренние отступы у списка -->
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Календарь</title>
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+
+<body>
+  <section class="calendar">
+    <h2 class="calendar-header">Апрель 2021</h2>
+    <table class="calendar-date">
+      <thead>
+        <tr>
+          <th>Пн</th>
+          <th>Вт</th>
+          <th>Ср</th>
+          <th>Чт</th>
+          <th>Пт</th>
+          <th>Сб</th>
+          <th>Вс</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>6</td>
+          <td>7</td>
+          <td>8</td>
+          <td>9</td>
+          <td>10</td>
+          <td>11</td>
+        </tr>
+        <tr>
+          <td>12</td>
+          <td>13</td>
+          <td>14</td>
+          <td class="rounded-green">15</td>
+          <td>16</td>
+          <td>17</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>19</td>
+          <td>20</td>
+          <td>21</td>
+          <td>22</td>
+          <td>23</td>
+          <td>24</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>26</td>
+          <td>27</td>
+          <td>28</td>
+          <td>29</td>
+          <td>30</td>
+          <td>31</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <ul class="calendar-todo">
+      <li>
+        <small class="todo-time">8:15</small>
+        <p class="todo-name">Погладить галстук</p>
+      </li>
+      <li>
+        <small class="todo-time">10:00</small>
+        <p class="todo-name">Заехать за Алексеем</p>
+      </li>
+      <li>
+        <small class="todo-time">17:30</small>
+        <p class="todo-name">Церемония награждения</p>
+      </li>
+    </ul>
+  </section>
+</body>
+
+</html>
+
+<!-- ./styles/app.css -->
+
+@font-face {
+  font-weight: 700;
+  font-family: Rubik;
+  src: url("../assets/fonts/Rubik-Bold.woff2") format("woff2");
+}
+
+@font-face {
+  font-weight: 400;
+  font-family: Rubik;
+  src: url("../assets/fonts/Rubik-Regular.woff2") format("woff2");
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  font-family: Rubik, sans-serif;
+  background-color: #e5e5e5;
+}
+
+.calendar {
+  width: 250px;
+  padding: 60px 60px 30px;
+  background-color: #1e1f25;
+  border-radius: 12px;
+}
+
+h2 {
+  text-align: center;
+  margin: 0 0 30px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.calendar-date {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  font-size: 14px;
+  line-height: 2;
+  border-bottom: 1px solid #313131;
+  width: 100%;
+}
+
+td {
+  color: #ccc;
+  text-align: center;
+  padding: 0;
+  line-height: 2.3;
+}
+
+.calendar-todo {
+  margin: 0;
+  padding: 0;
+}
+
+.calendar-todo li {
+  list-style-type: none;
+}
+
+.todo-name {
+  font-size: 14px;
+  margin: 5px 0 20px;
+}
+
+.todo-time {
+  color: #ccc;
+  font-size: 10px;
+}
+
+.rounded-green {
+  color: #fff;
+
+  background: #589c5f;
+  border-radius: 50%;
+}
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Calendar Template', () => {
+  test('The template must be equal to the standard', async () => {
+    const template = await page
+      .locator('.calendar')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
+test.describe('Paper Template', () => {
+  test('The template must be equal to the reference', async () => {
+    const template = await page
+      .locator('.notebook')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
+});
+
+test.describe('Code Terminal Template', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
