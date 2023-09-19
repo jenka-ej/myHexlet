@@ -1,0 +1,178 @@
+<!-- В этом испытании вы реализуете терминал с кодом и проработаете навыки работы с тегом <pre>.
+
+Стили:
+Терминал:
+1) Внутренние отступы: 20 пикселей по вертикали и 30 пикселей по горизонтали
+2) Цвет текста: белый
+3) Цвет фона: #263238
+4) Закругление: 5 пикселей. Для закругления используйте свойство border-radius
+
+Шапка:
+Внутри шапки терминала содержится три круглые кнопки с разными цветами:
+1) Закругление: 50%
+2) Высота и ширина: 11px
+3) Отступ справа: 5px
+4) Внешний отступ снизу: 20px
+Перед написанием стилей для кнопок сбросьте свойства border и padding для них
+
+Цвета кнопок:
+1) Красный: #ff5f56
+2) Желтый: #ffbd2e
+3) Зелёный: #27c93f
+
+Код:
+Для тега pre сбросьте стандартные внешние отступы
+Для тега code установите следующие стили:
+1) Размер шрифта: 18px
+2) Межстрочный интервал: 1.5
+3) Шрифт: JetBrains Mono. Файл шрифта находится в директории assets. Семейство шрифтов: monospace
+
+Каждый логический элемент внутри кода имеет своё цветовое выделение:
+1) Тег: #ff5370
+2) Атрибут: #ffcb6b
+3) Значение атрибута: #c3e88d
+
+Вёрстка «кода»:
+Используйте следующую конструкцию для получения отформатированного кода:
+<pre><code><span class="code-tag">&lt;section</span> <span class="code-attr">class</span>=&quot;<span class="code-string">card</span>&quot;<span class="code-tag">&gt;</span>
+Здесь вы можете увидеть несколько различных мнемоник. Их полезно знать, так как они часто используются при создании веб-приложений:
+1) &lt; — знак «меньше». Он используется при открытии тега
+2) &gt; — знак больше. Он используется при закрытии тега
+3) &quot; — двойные кавычки
+Важно сохранить форматирование. Попробуйте поиграться с этой частью кода и посмотрите, как это отобразится в браузере. -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/app.css">
+  <title>Terminal</title>
+</head>
+
+<body>
+  <div class="terminal">
+    <div class="header">
+      <button class="button red"></button>
+      <button class="button yellow"></button>
+      <button class="button green"></button>
+    </div>
+    <pre><code><span class="code-tag">&lt;section</span> <span class="code-attr">class</span>=&quot;<span class="code-string">card</span>&quot;<span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;h1&gt;</span>Nike Air Max<span class="code-tag">&lt;/h1&gt;</span>
+  <span class="code-tag">&lt;img</span> <span class="code-attr">src</span>=&quot;<span class="code-string">./images/airmax2020.png</span>&quot; <span class="code-attr">alt</span>=&quot;<span class="code-string">Nike Air Max</span>&quot;<span class="code-tag">&gt;</span>
+  <span class="code-tag">&lt;button&gt;</span>Купить<span class="code-tag">&lt;/button&gt;</span>
+<span class="code-tag">&lt;/section&gt;</span></code></pre>
+  </div>
+</body>
+
+</html>
+
+<!-- ./styles/app.css -->
+
+@font-face {
+  font-weight: 400;
+  font-family: "JetBrains Mono";
+  src: url("../assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+
+  background: #7e57c2;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header > .button {
+  border-radius: 50%;
+  height: 11px;
+  width: 11px;
+  margin-right: 5px;
+  border: 0;
+  padding: 0;
+}
+
+.red {
+  background-color: #ff5f56;
+}
+
+.yellow {
+  background-color: #ffbd2e;
+}
+
+.green {
+  background-color: #27c93f;
+}
+
+.terminal {
+  padding: 20px 30px;
+  color: white;
+  background-color: #263238;
+  border-radius: 5px;
+}
+
+pre {
+  margin: 0;
+}
+
+code {
+  font: 18px/1.5 "JetBrains Mono", monospace;
+}
+
+.code-tag {
+  color: #ff5370;
+}
+
+.code-attr {
+  color: #ffcb6b;
+}
+
+.code-string {
+  color: #c3e88d;
+}
+
+<!-- __tests__ -->
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 800,
+    height: 400,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Code Terminal Template', () => {
+  test('Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
