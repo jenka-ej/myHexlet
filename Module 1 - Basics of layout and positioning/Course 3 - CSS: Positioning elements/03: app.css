@@ -1,0 +1,178 @@
+/* Доработайте стили при наведении курсора мыши на карточку товара. Прошлый разработчик реализовал смену цвета,
+но совершенно не знает, как сдвинуть карточку при событии :hover.
+
+У всех карточек есть свойство transition, которое обеспечивает плавное изменение свойств.
+Чтобы при наведении на карточку положение тоже менялось плавно, необходимо сделать несколько вещей:
+1) Указать свойства расположения до того, как оно будет меняться
+2) Изменять только необходимые свойства при событии :hover
+
+Используя эти инструкции допишите необходимые свойства и расположите карточку следующим образом при наведении на неё курсора мыши:
+1) На 15 пикселей выше начального положения
+2) На 10 пикселей левее начального положения
+
+Для элемента card установите позиционирование и начальные координаты 0 у свойств, которые будут меняться при использовании :hover.
+Таким образом позиционирование и нулевые координаты будут установлены у card, а при hover будут меняться только значения координат. */
+
+@font-face {
+  font-family: "Libre Bodoni";
+  src: url("../assets/fonts/LibreBodoni-Regular.ttf");
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  color: #303846;
+  font: 18px/1.5 "Libre Bodoni", serif;
+
+  background: #f0f3f4;
+}
+
+h2 {
+  padding-right: 15px;
+  padding-left: 15px;
+
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.container {
+  width: 1230px;
+  margin: 0 auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.column-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column-4 {
+  width: 23%;
+  margin-bottom: 2%;
+}
+
+.card {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: 30px;
+
+  border: 1px solid #ccc;
+  border-radius: 10px;
+
+  transition: 0.7s;
+}
+
+.card:hover {
+  top: -15px;
+  left: -10px;
+
+  color: #fff;
+
+  background: linear-gradient(45deg, #4158d0, #c850c0 40%, #ffcc70 90%);
+  cursor: pointer;
+}
+
+.card h3 {
+  margin-top: 0;
+
+  font-size: 1.5em;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Educational Programme</title>
+  </head>
+
+  <body>
+    <section class="container">
+      <header>
+        <h2>Educational Programme</h2>
+      </header>
+      <div class="column-container justify-content-between">
+        <div class="column-4 card">
+          <h3>Frontend Developer</h3>
+          <p>Development of frontend components of web applications</p>
+          <p><small>by Hexlet</small></p>
+        </div>
+        <div class="column-4 card">
+          <h3>Python Developer</h3>
+          <p>Development of web applications on Django</p>
+          <p><small>by Hexlet</small></p>
+        </div>
+        <div class="column-4 card">
+          <h3>HTML/CSS Developer</h3>
+          <p>Layout using the latest CSS standards</p>
+          <p><small>by Hexlet</small></p>
+        </div>
+        <div class="column-4 card">
+          <h3>Fullstack Developer</h3>
+          <p>Development of frontend and backend components of web applications</p>
+          <p><small>by Hexlet</small></p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1400,
+    height: 900,
+  },
+};
+
+test.describe('Educational Programme Layout', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('Layout should be equal to template', async ({ page }) => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('Layout should be equal to template after hover', async ({ page }) => {
+    await page.locator('.card').first().hover();
+    await page.waitForTimeout(800);
+
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
