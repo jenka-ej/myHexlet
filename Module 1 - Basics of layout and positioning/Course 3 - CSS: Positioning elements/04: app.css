@@ -1,0 +1,91 @@
+/* Расположите 3 квадрата следующим образом.
+Все цвета квадратов и размеры даны в виде переменных в файле app.css. Перед позиционированием разместите все квадраты по координатам 0, 0.
+Используйте только изученные средства абсолютного позиционирования.
+
+square-red — красный квадрат
+square-green — зелёный квадрат
+square-blue — синий квадрат */
+
+:root {
+  --red: #f44336;
+  --green: #4caf50;
+  --blue: #2196f3;
+  --side: 200px;
+}
+
+body {
+  width: 600px;
+  height: 400px;
+  margin: 0;
+}
+
+div {
+  width: var(--side);
+  height: var(--side);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.square-red {
+  background-color: var(--red);
+}
+
+.square-green {
+  top: var(--side);
+  left: var(--side);
+  background-color: var(--green);
+}
+
+.square-blue {
+  left: calc(var(--side) * 2);
+  background-color: var(--blue);
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Squares</title>
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <div class="square-red"></div>
+  <div class="square-green"></div>
+  <div class="square-blue"></div>
+</body>
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 600,
+    height: 400,
+  },
+};
+
+test.describe('Squares', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('The layout must match the template', async ({ page }) => {
+    const template = await page
+      .locator('body')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
