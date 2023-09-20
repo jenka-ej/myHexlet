@@ -1,0 +1,117 @@
+/* Используя комбинацию относительного и абсолютного позиционирования, сделайте так, чтобы при наведении на карточку описание располагалось следующим образом.
+Для этого необходимо:
+1) Используя необходимые правила расположить блок справа
+2) Задать блоку с описанием высоту в 100%. Решите этот вопрос используя комбинацию top и bottom */
+
+.books-card {
+  position: relative;
+
+  box-sizing: border-box;
+  width: 500px;
+  height: 300px;
+  padding: 50px;
+
+  background: #2980b9;
+  background: linear-gradient(to right, #fff, #6dd5fa, #2980b9);
+
+  cursor: pointer;
+}
+
+.book-name {
+  width: 50%;
+
+  color: #00bcd4;
+  font-weight: bold;
+  font-size: 50px;
+}
+
+.book-author {
+  color: #03a9f4;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.book-description {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 250px;
+
+  box-sizing: border-box;
+  width: 50%;
+  padding: 20px 30px;
+
+  color: #fff;
+
+  background: #03a9f4;
+
+  opacity: 0;
+
+  transition: 1s;
+}
+
+.books-card:hover > .book-description {
+  opacity: 1;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Мигел де Сервантес — Дон Кихот</title>
+  </head>
+
+  <body>
+    <div class="books-card sky-gradient">
+      <div class="book-name">
+        Дон Кихот
+      </div>
+      <div class="book-author">
+        Мигел де Сервантес
+      </div>
+      <div class="book-description">
+        Роман Мигеля де Сервантеса «Хитроумный идальго Дон Кихот Ламанчский» был признан Нобелевским комитетом лучшим
+        произведением мировой литературы, книгой всех времён и народов.
+      </div>
+    </div>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Testing the «position relative and absolute exercise', () => {
+  test('The styles of the books-card element must match the task', async () => {
+    const header = page.locator('.books-card');
+
+    await expect(header).toHaveCSS('position', 'relative');
+  });
+
+  test('The styles of the book-description element must match the task', async () => {
+    const header = page.locator('.book-description');
+
+    await expect(header).toHaveCSS('position', 'absolute');
+    await expect(header).toHaveCSS('top', '0px');
+    await expect(header).toHaveCSS('bottom', '0px');
+    await expect(header).toHaveCSS('right', '0px');
+    await expect(header).toHaveCSS('width', '250px');
+  });
+});
