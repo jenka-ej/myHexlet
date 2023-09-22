@@ -1,0 +1,117 @@
+/* Используя технику «старых мастеров», создайте типичный трёхколоночный макет. Вёрстка доступна в файле index.html.
+Ваша задача — используя свойства float и clear, сделать необходимый макет.
+В файле app.css уже созданы некоторые стили для блоков. Допишите необходимые стили. Не забывайте, что у многих блоков возможно наличие свойства float.
+Используйте одинаковое значение для всех свойств float. */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.left-aside {
+  float: left;
+
+  width: 20%;
+  height: 200px;
+
+  text-align: center;
+
+  background: #2196f3;
+}
+
+.right-aside {
+  float: left;
+
+  width: 20%;
+  height: 200px;
+
+  text-align: center;
+
+  background: #2196f3;
+}
+
+main {
+  float: left;
+
+  width: 60%;
+  height: 200px;
+
+  color: #fff;
+  text-align: center;
+
+  background: #3f51b5;
+}
+
+footer {
+  clear: both;
+
+  height: 120px;
+
+  color: #fff;
+  text-align: center;
+
+  background: #00bcd4;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles/app.css">
+    <title>Трёхколоночный макет</title>
+  </head>
+
+  <body>
+    <aside class="left-aside">
+      <h2>Левый сайдбар</h2>
+    </aside>
+    <main>
+      <h1>Статья</h1>
+      <p>Основная область сайта. Здесь находится уникальный контент страницы, который не должен повторяться. Это
+        основное правило использования семантического тега main в HTML5</p>
+    </main>
+    <aside class="right-aside">
+      <h2>Правый сайдбар</h2>
+    </aside>
+    <footer>
+      <h2>Футер сайта</h2>
+      <p>Различная юридическая информация</p>
+    </footer>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1000,
+    height: 500,
+  },
+};
+
+test.describe('Float Layout', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('The layout must match the template', async ({ page }) => {
+    const template = await page
+      .locator('body')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
