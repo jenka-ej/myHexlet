@@ -1,0 +1,311 @@
+/* Задача — сделать фиксированную шапку в макете, который представлен в этом упражнении.
+Взгляните на макет, используя «Веб-доступ». Это поможет понять все проблемы, с которыми вы встретитесь в ходе выполнения задачи.
+Вам необходимо дополнить классы fixed-header и padding-header. Высота шапки должна быть 100 пикселей.
+Ширина максимально доступная. После того, как создадите фиксированную шапку, вы увидите, что контентная часть «уехала» под шапку.
+Исправьте это, используя класс padding-header. */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  color: #303846;
+  font-size: 16px;
+  font-family: sans-serif;
+  line-height: 1.5;
+
+  background: #f0f3f4;
+}
+
+h1 {
+  padding-right: 15px;
+  padding-left: 15px;
+
+  font-weight: bold;
+  font-size: 3em;
+}
+
+h2 {
+  padding-right: 15px;
+  padding-left: 15px;
+
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.h-150 {
+  height: 150px;
+}
+
+.p-2 {
+  padding: 2em;
+}
+
+.mr-1 {
+  margin-right: 1em;
+}
+
+.font-2 {
+  font-size: 2em;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.bg-light {
+  background: #f7f7f7;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid #e0dfdf;
+}
+
+.fixed-header {
+  position: fixed;
+  height: 100px;
+  width: 100%;
+}
+
+.padding-header {
+  padding-top: 100px;
+}
+
+.nav-horizontal {
+  display: flex;
+  justify-content: space-between;
+
+  list-style: none;
+}
+
+.nav-horizontal a {
+  color: #666;
+  font-weight: bold;
+  text-decoration: none;
+
+  transition: 0.6s;
+}
+
+.nav-horizontal .active-link {
+  color: #424e75;
+}
+
+.nav-horizontal a:hover {
+  color: #c44741;
+}
+
+.container {
+  width: 1230px;
+  margin: 0 auto;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.column-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column-2 {
+  width: 48%;
+  margin-bottom: 2%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.column-4 {
+  width: 23%;
+  margin-bottom: 2%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.card {
+  padding: 10px 25px;
+
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+}
+
+.card-name {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.card-price {
+  color: #666;
+  font-weight: bold;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Магазин всякой всячины</title>
+    <link rel="stylesheet" href="styles/app.css">
+  </head>
+
+  <body>
+    <header class="header fixed-header p-2 bg-light">
+      <span class="font-2 font-bold">Логотип</span>
+      <nav>
+        <ul class="nav-horizontal">
+          <li><a href="#" class="active-link mr-1">Главная</a></li>
+          <li><a href="#" class="mr-1">О нас</a></li>
+          <li><a href="#" class="mr-1">Продукция</a></li>
+          <li><a href="#" class="mr-1">Контакты</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="padding-header">
+      <section class="container">
+        <header>
+          <h1>Магазин всякой всячины</h1>
+        </header>
+        <div class="column-container">
+          <div class="column-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi facere vero esse ipsam ea
+            id saepe totam ut sint expedita perspiciatis repudiandae, minima veritatis alias et voluptas exercitationem
+            non. Accusantium.</div>
+          <div class="column-2">Doloribus repellat impedit vero voluptatibus, necessitatibus incidunt vel perspiciatis
+            itaque. Quibusdam tempora nobis harum voluptatibus laudantium, voluptates magni consequatur. Maiores neque
+            ex voluptate deserunt repellat. Ad unde ipsa accusamus culpa.</div>
+          <div class="column-2">Ipsam nihil sunt, consectetur sapiente saepe officiis fugit autem amet tempora ducimus.
+            Illo est pariatur sint porro excepturi obcaecati aliquid asperiores! A repellat eligendi deserunt omnis
+            aspernatur alias, iusto eos.</div>
+          <div class="column-2">Quod architecto officiis autem tempore, error nisi maxime dolorem ipsam soluta itaque
+            porro eum nesciunt corporis culpa. Similique culpa dolores, cum velit reiciendis fugiat modi, dignissimos
+            inventore iusto nobis itaque.</div>
+        </div>
+      </section>
+
+      <section class="container">
+        <header>
+          <h2>Наши товары</h2>
+        </header>
+        <div class="column-container justify-content-between">
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+          <div class="column-4 card">
+            <div class="h-150">Картинка</div>
+            <p class="card-name">Товар</p>
+            <p class="card-price">Цена: <span>350 руб.</span></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+});
+
+test.describe('Testing the «position fixed» exercise', () => {
+  test('The styles of the header element must match the task', async ({ page }) => {
+    const header = page.locator('.fixed-header');
+
+    await expect(header).toHaveCSS('position', 'fixed');
+    await expect(header).toHaveCSS('top', '0px');
+    await expect(header).toHaveCSS('height', '100px');
+    await expect(header).toHaveCSS('width', '1280px');
+  });
+
+  test('The styles of the padding-header element must match the task', async ({ page }) => {
+    const header = page.locator('.padding-header');
+
+    await expect(header).toHaveCSS('padding-top', '100px');
+  });
+});
