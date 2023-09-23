@@ -1,0 +1,136 @@
+/* Timeline — распространённый приём подачи информации на веб-сайтах. Это одновременно информативный и визуальный инструмент,
+позволяющий быстро донести важные этапы для пользователя.
+Существует множество различных дизайнов для создания временной шкалы и одну из них вы реализуете в этом испытании.
+Вся необходимая вёрстка уже представлена в файле index.html. Допишите стили для нужных классов. Сделайте их без привязки к определённым тегам.
+Это позволит использовать не только ту структуру, которая дана, но и построить timeline на других тегах.
+
+Базовые стили обёртки timeline:
+1) Внутренние отступы: 30px сверху, 0px справа, 30 пикселей снизу и 50px слева
+2) От обёртки строится вертикальная черта. Она должна растягиваться на 100 процентов высоты обёртки. Ширина линии: 2px, цвет: #fff
+3) Внешние отступы: 0px
+
+Базовые стили элементов timeline:
+1) Внешний отступ снизу: 100px. У последнего элемента не должно быть отступа
+2) Базовый стиль круга элемента timeline
+3) Ширина и высота: 20px
+4) Цвет: #80fcff
+5) Отступ сверху от элемента timeline: 15%
+6) Круг должен быть отцентрован относительно вертикальной линии
+7) Для закругления используйте свойство border-radius со значением 50%
+
+Подумайте, какие значения left имеют вертикальная линия и круг. Исходите из ширины элементов и внутренних отступов обёртки .timeline.
+В качестве вертикальной черты вы можете использовать псевдоэлемент или свойство border.
+В последнем случае необходимо компенсировать внутренние отступы слева и сделать их 48px. */
+
+body {
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 10px;
+
+  color: #fff;
+  font: 18px/1.5 sans-serif;
+
+  background-color: #212529;
+}
+
+h2,
+p {
+  margin: 0;
+}
+
+.timeline {
+  padding: 30px 0 30px 48px;
+  border-left: 2px solid #fff;
+  margin: 0;
+  list-style-type: none;
+}
+
+.timeline li:not(:last-child) {
+  padding-bottom: 100px;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-item::before {
+  position: absolute;
+  box-sizing: border-box;
+  margin-top: calc(67.5px * 0.15);
+  left: -60px;
+  width: 20px;
+  height: 20px;
+  background: #80fcff;
+  border-radius: 50%;
+  content: "";
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Первый полёт верстальщика на луну</title>
+  <link rel="stylesheet" href="./styles/app.css">
+</head>
+
+<body>
+  <ul class="timeline">
+    <li class="timeline-item">
+      <h2>Январь</h2>
+      <p>Рост объёма вёрстки на 20%</p>
+    </li>
+    <li class="timeline-item">
+      <h2>Май</h2>
+      <p>Заключение сотрудничества с «Космос X»</p>
+    </li>
+    <li class="timeline-item">
+      <h2>Ноябрь</h2>
+      <p>Первый полёт верстальщика на луну</p>
+    </li>
+  </ul>
+</body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 90,
+    fullPage: true,
+  },
+  viewport: {
+    width: 500,
+    height: 520,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Timeline Component', () => {
+  test('The layout must match the template', async () => {
+    const template = await page
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
