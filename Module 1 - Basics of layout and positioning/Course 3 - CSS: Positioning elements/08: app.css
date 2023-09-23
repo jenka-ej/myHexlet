@@ -1,0 +1,79 @@
+/* Для получения необходимого цвета художники используют технику смешивания: берут два цвета, смешивают их и получают необходимый им цвет.
+Например, фиолетовый получается при смешивании красного и синего. Попробуем воспроизвести этот эффект, используя CSS.
+В файле index.html находится вся необходимая вёрстка. Ваша задача правильно спозиционировать два круга, сделав так, чтобы красный цвет оказался поверх синего.
+Для классов .circle-red и .circle-blue установите значения background соответствующие их классам. Используйте словесное описание цвета в CSS.
+Далее необходимо наложить оба блока друг на друга. Так как у нас существует общий класс .circle, то общие свойства необходимо записывать в него.
+Переместите круг .circle-red поверх круга .circle-blue. Используйте значения 1 и 2.
+Установите полупрозрачность красного круга используя свойство opacity. Полупрозрачности соответствует значение 0.5. */
+
+.circle {
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+}
+
+.circle-blue {
+  background: blue;
+  z-index: 1;
+}
+
+.circle-red {
+  background: red;
+  z-index: 2;
+  opacity: 0.5;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Наложение цвета</title>
+  </head>
+
+  <body>
+    <section class="color-circle">
+      <div class="circle circle-red"></div>
+      <div class="circle circle-blue"></div>
+    </section>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+});
+
+test.describe('Testing the «z-index» exercise', () => {
+  test('The styles of the circle element must match the task', async ({ page }) => {
+    const header = page.locator('.circle').first();
+
+    await expect(header).toHaveCSS('position', 'absolute');
+  });
+
+  test('The styles of the circle-red element must match the task', async ({ page }) => {
+    const header = page.locator('.circle-red');
+
+    await expect(header).toHaveCSS('background-color', 'rgb(255, 0, 0)');
+    await expect(header).toHaveCSS('z-index', '2');
+    await expect(header).toHaveCSS('opacity', '0.5');
+  });
+
+  test('The styles of the circle-blue element must match the task', async ({ page }) => {
+    const header = page.locator('.circle-blue');
+
+    await expect(header).toHaveCSS('background-color', 'rgb(0, 0, 255)');
+    await expect(header).toHaveCSS('z-index', '1');
+  });
+});
