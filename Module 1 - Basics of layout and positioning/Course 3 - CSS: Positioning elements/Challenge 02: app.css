@@ -1,0 +1,161 @@
+/* В большинстве дизайнов используются интерактивные элементы, отличные от тех, которые по умолчанию есть в браузере.
+Такими элементами являются кнопки, чекбоксы, радиокнопки, список с множественным выбором и так далее.
+И если для кнопок сделать собственное оформление просто, то с такими элементами, как чекбоксы всё немного сложнее.
+Браузеры не позволяют полностью кастомизировать такие элементы, поэтому разработчики скрывают реальный элемент и, на его месте,
+создают элемент с похожим поведением.
+В этом задании вам предстоит создать собственный чекбокс с уникальным дизайном.
+
+Основной алгоритм создания кастомного чекбокса состоит из:
+1) Скрытия элемента <input>
+2) Добавление элемента <label> и его связь с <input>
+3) Так как <label> и <input> связаны друг с другом, то клик по <label> приведёт к изменению состояния checked для <input>
+4) С помощью псевдоэлемента создаётся свой дизайн чекбокса
+5) В CSS указывается внешний вид для псевдоэлемента при активном состоянии checked у <input> и при неактивном состоянии
+
+Используя доступные переменные создайте кастомный чекбокс. Для состояния :hover используется тот же фон, что и в переменной --checkbox-checked,
+но полупрозрачный.
+
+Для стилизации активного чекбокса используйте псевдокласс :checked.
+Для создания полупрозрачности используйте свойство opacity со значением 0.5.
+Для <label> добавьте свойство cursor со значением pointer.
+Для псевдоэлемента используйте свойство top: 0. Это поможет правильно его разместить относительно элемента label. */
+
+:root {
+  /*
+    Переменная для свойства background. Здесь сокращённая запись свойств в таком порядке:
+    background-image
+    background-position / background-size
+    background-repeat
+    background-color
+  */
+  --checkbox-checked: url("../assets/images/check.png") center / 0.5rem no-repeat #288cff;
+  --checkbox-side: 1rem;
+  --checkbox-border: 1px solid #ced4da;
+  --checkbox-radius: 0.3rem;
+  --checkbox-label-before-left: -1.5rem;
+}
+
+body {
+  font: 18px/1.5 sans-serif;
+
+  background: #f8fafc;
+}
+
+.hexlet-control {
+  padding-left: 2rem;
+}
+
+.hexlet-checkbox {
+  position: absolute;
+
+  opacity: 0;
+}
+
+.hexlet-checkbox-label {
+  position: relative;
+  cursor: pointer;
+}
+
+.hexlet-checkbox-label::before {
+  position: absolute;
+
+  top: 0;
+  left: var(--checkbox-label-before-left);
+
+  width: var(--checkbox-side);
+  height: var(--checkbox-side);
+
+  border-radius: var(--checkbox-radius);
+  border: var(--checkbox-border);
+
+  display: block;
+  content: "";
+}
+
+.hexlet-checkbox:hover + .hexlet-checkbox-label::before {
+  background: var(--checkbox-checked);
+  opacity: 0.5;
+}
+
+.hexlet-checkbox:checked + .hexlet-checkbox-label::before {
+  background: var(--checkbox-checked);
+  opacity: 1;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Checkbox</title>
+  <link rel="stylesheet" href="./styles/app.css">
+</head>
+<body>
+  <h1>Пользовательский Checkbox</h1>
+  <div class="hexlet-control">
+    <input type="checkbox" id="checkbox" class="hexlet-checkbox">
+    <label for="checkbox" class="hexlet-checkbox-label">Hexlet Checkbox</label>
+  </div>
+</body>
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 300,
+    height: 200,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('HexletCheckbox Component', () => {
+  test('Initial state of the component', async () => {
+    const template = await page
+      .locator('.hexlet-control')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('Hover state of the component', async () => {
+    await page.locator('label').hover();
+
+    const template = await page
+      .locator('.hexlet-control')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('Checked state of the component', async () => {
+    await page.locator('label').click();
+
+    const template = await page
+      .locator('.hexlet-control')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
