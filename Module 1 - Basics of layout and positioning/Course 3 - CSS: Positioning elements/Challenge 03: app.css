@@ -1,0 +1,123 @@
+/* В этом испытании вам необходимо дополнить стили для модального окна.
+Основной целью является - центрирование модального окна по вертикали и горизонтали на любом разрешении экрана. */
+
+html,
+body {
+
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+
+  font-family: sans-serif;
+  line-height: 1.5;
+
+  background: #f1f1f1;
+}
+
+.modal {
+  width: 500px;
+  height: 220px;
+
+  padding: 40px 40px 20px;
+  overflow: hidden;
+
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 10px 10px 5px -8px rgb(209 205 209 / 100%);
+}
+
+.modal-center {
+  position: absolute;
+  top: calc(50% - 140px);
+  left: calc(50% - 290px);
+}
+
+h2 {
+  margin: 0 0 1em;
+
+  color: #333;
+  font-size: 1.6em;
+}
+
+.modal-content {
+  color: #616161;
+}
+
+.modal-footer {
+  float: right;
+  margin: 1.5em 0 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px;
+
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.btn-blue {
+  color: #fff;
+
+  background: #2196f3;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хекслет</title>
+    <link rel="stylesheet" href="styles/app.css">
+  </head>
+
+  <body>
+    <div class="modal modal-center">
+      <div class="modal-content">
+        <h2>Появился новый курс по вёрстке!</h2>
+        <p>На портале Hexlet теперь доступны курсы по SASS. Два новых курса и более десятка упражнений. Изучите самый
+          популярный препроцессор, который облегчит написание CSS</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn">Остаться на странице</a>
+        <a href="#" class="btn btn-blue">Перейти</a>
+      </div>
+    </div>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1200,
+    height: 600,
+  },
+};
+
+test.describe('Modal Template', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('The layout must match the template', async ({ page }) => {
+    const template = await page
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
