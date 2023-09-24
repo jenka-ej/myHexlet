@@ -1,0 +1,171 @@
+/* Выпадающее меню — наверное, самый частый элемент, который присутствует на макете. Это действительно удобная концепция,
+позволяющая вместить много различных пунктов в небольшое пространство и логически разделить подпункты.
+В этом испытании вам дана вёрстка меню с выпадающим подменю. Но работоспобность оставляет желать лучшего.
+
+Ваша задача: дополнить недостающие стили селекторов:
+1) .sub-menu
+2) .nav li
+3) .nav li:hover > .sub-menu
+
+Алгоритм работы выпадающего меню:
+1) В исходном состоянии все подменю скрыты
+2) При наведении на пункт меню должно появляться подменю */
+
+body {
+  margin: 0;
+  padding: 0;
+
+  color: #333;
+  font-family: sans-serif;
+  line-height: 1.5;
+
+  background: #f9f9f9;
+}
+
+.header {
+  padding: 20px 40px;
+}
+
+.header-white {
+  background: #fff;
+}
+
+.nav ul {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav > ul {
+  display: flex;
+}
+
+.nav li {
+  position: relative;
+
+  padding: 15px 30px;
+
+  cursor: pointer;
+}
+
+.sub-menu {
+  display: none;
+}
+
+.nav li:hover > .sub-menu {
+  display: block;
+  position: absolute;
+  left: 0;
+
+  width: max-content;
+  padding-top: 25px;
+
+  background: #fff;
+  box-shadow: 5px 5px 5px 0 rgb(240 240 240 / 100%);
+}
+
+.nav a {
+  color: #333;
+  text-decoration: none;
+}
+
+.nav .nav-title {
+  color: #333;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.nav li:hover > a,
+.nav li:hover > .nav-title {
+  color: #717171;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хекслет</title>
+    <link rel="stylesheet" href="styles/app.css">
+  </head>
+
+  <body>
+    <header class="header header-white">
+      <nav class="nav">
+        <ul>
+          <li>
+            <span class="nav-title">Проекты</span>
+            <ul class="sub-menu">
+              <li><a href="#">Обзор и отзывы</a></li>
+              <li><a href="#">Что такое проекты?</a></li>
+              <li><a href="#">Как подготовиться?</a></li>
+            </ul>
+          </li>
+          <li>
+            <span class="nav-title">Подписка</span>
+            <ul class="sub-menu">
+              <li><a href="#">Что такое подписка?</a></li>
+              <li><a href="#">Цены</a></li>
+            </ul>
+          </li>
+          <li><a href="#" class="nav-title">Компаниям</a></li>
+          <li><a href="#" class="nav-title">Помощь</a></li>
+        </ul>
+      </nav>
+    </header>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1200,
+    height: 350,
+  },
+};
+
+test.describe('Drop-down Menu Component', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('Initial state of the component', async ({ page }) => {
+    const template = await page
+      .locator('header')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('Component when hovering over the first menu item', async ({ page }) => {
+    await page.locator('.nav > ul > li:nth-child(1)').hover();
+
+    const template = await page
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('Component when hovering over the second menu item', async ({ page }) => {
+    await page.locator('.nav > ul > li:nth-child(2)').hover();
+
+    const template = await page
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
