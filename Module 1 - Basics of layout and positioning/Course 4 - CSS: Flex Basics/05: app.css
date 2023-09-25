@@ -1,0 +1,139 @@
+/* Наверное, одна из самых частых задач в карьере верстальщика — прижатие футера к низу страницы.
+Множество способов позволяют сделать эту, с одной стороны, нехитрую манипуляцию, которая требует больших знаний.
+Флекс позволяет выполнить эту задачу буквально в три строчки кода. Эти три строчки вам и предстоит написать.
+
+В файле index.html доступна вся необходимая вёрстка. Ознакомьтесь с классами, которые там используются и обратите внимание на то,
+как эти классы могут переиспользоваться.
+Для класса .container допишите все необходимые стили. Вспомните про свойство смены направления главной оси.
+Это понадобится для корректной расстановки элементов. */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.p-20 {
+  padding: 20px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.nav-item {
+  padding: 15px 20px;
+
+  color: #fff;
+
+  background: #03a9f4;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background: #026897;
+}
+
+.nav-item a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-wrap {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.logo {
+  margin-right: 2em;
+
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 2em;
+}
+
+footer {
+  box-sizing: border-box;
+  height: 150px;
+
+  color: #fff;
+  font-size: 3em;
+  line-height: 2em;
+
+  background: #03a9f4;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru" class="h-100">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/app.css">
+  <title>Страница компании</title>
+</head>
+
+<body class="h-100">
+  <div class="container h-100">
+    <header class="p-20 d-flex">
+      <div class="logo">Название компании</div>
+      <nav>
+        <ul class="d-flex nav-wrap">
+          <li class="nav-item"><a href="#">Главная</a></li>
+          <li class="nav-item"><a href="#">Услуги</a></li>
+          <li class="nav-item"><a href="#">Продукция</a></li>
+          <li class="nav-item"><a href="#">О нас</a></li>
+          <li class="nav-item"><a href="#">Контакты</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main class="p-20">
+      <p>На главной странице оказалось не так много текста. Поэтому некрасиво, когда footer расположен сразу в конце
+        этого текста. Передвиньте его к нижнему краю браузера. Для этого можно расположить элементы используя свойство
+      justify-content</p>
+    </main>
+    <footer class="p-20">
+      Footer высотой 150 пикселей
+    </footer>
+  </div>
+</body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Layout Tests', () => {
+  test('container should have correct styles', async () => {
+    const container = page.locator('.container');
+
+    await expect(container).toHaveCSS('display', 'flex');
+    await expect(container).toHaveCSS('flex-direction', 'column');
+    await expect(container).toHaveCSS('justify-content', 'space-between');
+  });
+});
