@@ -1,0 +1,170 @@
+/* Двухколоночный макет — частый выбор при создании сайта. Это очень простая структура документа, а с использованием flex создавать её можно ещё быстрее.
+В данном задании представлен макет страницы. С помощью флекс-контейнеров вам надо сверстать его до конца.
+Вся вёрстка есть в файле index.html, а в файле styles/app.css уже прописана большая часть стилей.
+
+Допишите все необходимые стили, чтобы элементы выстроились так, как указано на скриншоте выше.
+Обратите внимание, что порядок элементов внутри шапки страницы не совпадает с порядком на скриншоте.
+Используйте свойства, которые вы узнали в этом уроке. */
+
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: sans-serif;
+
+  background-color: #f7f8fa;
+}
+
+header {
+  display: flex;
+  flex-direction: row-reverse;
+
+  padding: 0 50px;
+
+  color: #fff;
+
+  background: #00b7a1;
+}
+
+header .name {
+  box-sizing: border-box;
+  padding: 15px;
+
+  font-weight: bold;
+  font-size: 20px;
+  text-align: right;
+}
+
+header nav ul {
+  display: flex;
+
+  padding: 0;
+
+  list-style: none;
+}
+
+header nav ul li {
+  width: 20%;
+}
+
+main {
+  display: flex;
+}
+
+section {
+  box-sizing: border-box;
+  padding: 30px 50px;
+}
+
+.aside-block {
+  box-sizing: border-box;
+  height: 100px;
+  padding: 30px 50px;
+}
+
+.w30 {
+  width: 30%;
+}
+
+.w70 {
+  width: 70%;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Страница компании</title>
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <header>
+    <div class="name w30">Company Name</div>
+    <nav class="w70">
+      <ul>
+        <li>Пункт 1</li>
+        <li>Пункт 2</li>
+        <li>Пункт 3</li>
+        <li>Пункт 4</li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <aside class="w30">
+      <div class="aside-block">Рекламный блок</div>
+      <div class="aside-block">Рекламный блок</div>
+      <div class="aside-block">Рекламный блок</div>
+    </aside>
+    <section class="w70">
+      <h1>Идея и мотивация</h1>
+      <p>Мы считаем, что настоящий программист должен понимать, как работает компьютер, и обладать вычислительным
+        мышлением. Он должен видеть проблему, а не задание. Должен уметь анализировать и рассуждать на уровне проблемы
+        и выше, а не только на уровне кода.</p>
+      <p>При сегодняшнем обилии учебных материалов, курсов и книг, главный вопрос, который встает перед новичком, это
+        не «где учиться?», а «что и в каком порядке учить?». Существует множество мнений по этому поводу. Кто-то
+        советует начинать с математики, кто-то советует конкретные языки и технологии.</p>
+    </section>
+  </main>
+</body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1200,
+    height: 400,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('layout tests', () => {
+  test('header should have correct styles', async () => {
+    const header = page.locator('header');
+
+    await expect(header).toHaveCSS('display', 'flex');
+    await expect(header).toHaveCSS('flex-direction', 'row-reverse');
+  });
+
+  test('main should have correct styles', async () => {
+    const main = page.locator('main');
+
+    await expect(main).toHaveCSS('display', 'flex');
+  });
+
+  test('list should have correct styles', async () => {
+    const list = page.locator('header nav ul');
+
+    await expect(list).toHaveCSS('display', 'flex');
+  });
+
+  test('1200px. Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
