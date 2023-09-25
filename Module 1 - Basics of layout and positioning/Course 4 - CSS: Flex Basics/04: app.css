@@ -1,0 +1,125 @@
+/* При создании каталога (например, товаров) важно использовать возможности flex для переноса элементов.
+Хоть правил для этого нужно не так много, на выходе получается хорошо адаптированные карточки для каталога.
+
+В этом задании вам необходимо создать вёрстку для самого простого каталога товаров и научить товары переноситься, если для них не хватает места.
+Структура каталога следующая:
+1) Корневой ul с классом catalog
+2) Внутри 6 карточек товара с классом catalog-item. Карточки имеют следующие характеристики:
+2.1) Заголовок h3 с названием товара
+2.2) Изображение по пути assets/images/tota.png
+2.3) Параграф с классом price. Внутри параграфа располагается произвольная цена
+2.4) Ширина карточки товара: 350px
+
+Используя изученные flex-свойства, разместите товары в одну строку с возможностью переноса карточки на новую строку при нехватке места. */
+
+body {
+  margin: 0;
+
+  color: #212529;
+  font: 18px/1.5 sans-serif;
+
+  background-color: #f7f8fa;
+}
+
+img {
+  width: 100%;
+
+  vertical-align: middle;
+}
+
+h2 {
+  text-align: center;
+}
+
+.catalog {
+  display: flex;
+  flex-wrap: wrap;
+
+  text-align: center;
+}
+
+.catalog-item {
+  width: 350px;
+  list-style: none;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Каталог товаров</title>
+  </head>
+
+  <body>
+    <h2>Каталог товаров</h2>
+    <ul class="catalog">
+      <li class="catalog-item">
+        <h3>Бананы</h3>
+        <img src="./assets/images/tota.png" alt="Tota image">
+        <p class="price">140</p>
+      </li>
+      <li class="catalog-item">
+        <h3>Орехи</h3>
+        <img src="./assets/images/tota.png" alt="Tota image">
+        <p class="price">200</p>
+      </li>
+      <li class="catalog-item">
+        <h3>Молоко</h3>
+        <img src="./assets/images/tota.png" alt="Tota image">
+        <p class="price">100</p>
+      </li>
+      <li class="catalog-item">
+        <h3>Гречка</h3>
+        <img src="./assets/images/tota.png" alt="Tota image">
+        <p class="price">110</p>
+      </li>
+      <li class="catalog-item">
+        <h3>Куриная грудка</h3>
+        <img src="./assets/images/tota.png" alt="Tota image">
+        <p class="price">300</p>
+      </li>
+      <li class="catalog-item">
+        <h3>Шоколадка</h3>
+        <img src="./assets/images/tota.png" alt="Tota image">
+        <p class="price">90</p>
+      </li>
+    </ul>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+});
+
+test.describe('Catalog Layout Tests', () => {
+  test('all element should be in index.html', async ({ page }) => {
+    const catalogWrap = page.locator('.catalog');
+    const catalogItem = page.locator('.catalog-item').first();
+
+    await expect(catalogWrap).toBeVisible();
+    await expect(catalogItem).toBeVisible();
+  });
+
+  test('There should be 6 product cards on the page', async ({ page }) => {
+    const catalogItemCount = await page.locator('.catalog-item').count();
+
+    await expect(catalogItemCount).toBe(6);
+  });
+
+  test('catalog should have correct styles', async ({ page }) => {
+    const catalog = page.locator('.catalog');
+
+    await expect(catalog).toHaveCSS('display', 'flex');
+    await expect(catalog).toHaveCSS('flex-wrap', 'wrap');
+  });
+});
