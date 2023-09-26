@@ -1,0 +1,104 @@
+/* При создании многоколоночного макета зачастую необходимо чётко указывать ширину сайдбарам (крайним колонкам),
+а всё остальное пространство отдавать под контентную часть. С Flex эта задача сильно упрощается, но есть один маленький момент.
+При попытке создать три колонки и раскидать их с помощью свойства justify-content, центральный блок будет иметь ширину равную ширине контента внутри него.
+Это нам не подходит, потому что в таком случае появится пустое пространство.
+
+Ваша задача — сделать трёхколоночную структуру и отдать центральному блоку всё свободное пространство. Нам нужны следующие три блока:
+1) .left-aside ­— левая колонка. Дайте ей ширину в 200 пикселей и установите цвет фона #d32f2f
+2) .content-side — контентная часть. Основная часть нашего макета. Она должна занимать всё доступное пространство, вне зависимости от ширины контента внутри.
+Цвет фона #388e3c. Используйте тег <article>
+3) .right-aside — правая колонка. Её ширина равна 350 пикселей. Цвет фона #1976d2
+
+Обратите внимание, что выделены названия классов, которые необходимо использовать. Для каждого блока установите минимальную высоту в 50vh. */
+
+:root {
+  --min-height: 50vh;
+}
+
+.left-aside {
+  width: 200px;
+  min-height: var(--min-height);
+
+  background: #d32f2f;
+}
+
+.content-side {
+  flex-grow: 1;
+  min-height: var(--min-height);
+
+  background: #388e3c;
+}
+
+.right-aside {
+  width: 350px;
+  min-height: var(--min-height);
+
+  background: #1976d2;
+}
+
+.d-flex {
+  display: flex;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Flex Grow</title>
+  </head>
+
+  <body>
+    <main class="d-flex">
+      <aside class="left-aside"></aside>
+      <article class="content-side"></article>
+      <aside class="right-aside"></aside>
+    </main>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+});
+
+test.describe('layout tests', () => {
+  test('all element should be in index.html', async ({ page }) => {
+    const rightAside = page.locator('.right-aside');
+    const leftAside = page.locator('.left-aside');
+    const contentSide = page.locator('.content-side');
+
+    await expect(rightAside).toBeVisible();
+    await expect(leftAside).toBeVisible();
+    await expect(contentSide).toBeVisible();
+  });
+
+  test('rightAside should have correct styles', async ({ page }) => {
+    const rightAside = page.locator('.right-aside');
+
+    await expect(rightAside).toHaveCSS('width', '350px');
+    await expect(rightAside).toHaveCSS('min-height', '360px');
+  });
+
+  test('leftAside should have correct styles', async ({ page }) => {
+    const leftAside = page.locator('.left-aside');
+
+    await expect(leftAside).toHaveCSS('width', '200px');
+    await expect(leftAside).toHaveCSS('min-height', '360px');
+  });
+
+  test('contentSide should have correct styles', async ({ page }) => {
+    const contentSide = page.locator('.content-side');
+
+    await expect(contentSide).toHaveCSS('flex-grow', '1');
+    await expect(contentSide).toHaveCSS('min-height', '360px');
+  });
+});
