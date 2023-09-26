@@ -1,0 +1,139 @@
+/* Центрирование элемента по главной и поперечной оси — одна из наиболее распространённых задач в вёрстке.
+Картинки, блоки, иконки внутри блоков, всё это зачастую необходимо поставить по центру всего родительского блока.
+
+В данном задании вам необходимо создать кнопку, внутри которой будет расположена иконка и текст.
+Расположение элементов будет по центру относительно всех осей.
+
+Создайте элемент <button> со следующими классами:
+1) btn — основные стили кнопки
+2) d-flex — класс, определяющий Flex-контейнер
+3) flex-center — класс для установки центрирования элементов внутри контейнера по всем осям
+4) text-white — класс для добавления белого цвета текста #fff
+
+Внутри элемента <button> добавьте:
+1) Изображение, которое находится в директории images/ и установите для него класс mr-1. Этот класс будет устанавливать правый внешний отступ
+2) Элемент <span> с текстом Принять
+
+В файле уже созданы стили для класса btn. Остальные стили допишите самостоятельно.
+Для класса mr-1 правый внешний отступ будет равен 1em. */
+
+.btn {
+  width: 150px;
+  padding: 10px;
+
+  font-weight: bold;
+
+  background: #136ef6;
+
+  border: none;
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.mr-1 {
+  margin-right: 1em;
+}
+
+.text-white {
+  color: #fff;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Выравнивание элементов</title>
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <button class="btn d-flex flex-center text-white">
+    <img src="images/check-icon.svg" alt="check-icon" class="mr-1">
+    <span>Принять</span>
+  </button>
+</body>
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test('all HTML elements should be in index.html', async () => {
+  const button = page.locator('.btn');
+  const images = button.locator('img');
+  const span = button.locator('span');
+
+  await expect(button).toBeVisible();
+  await expect(images).toBeVisible();
+  await expect(span).toBeVisible();
+});
+
+test.describe('button tag tests', () => {
+  test('button tag should have correct classes', async () => {
+    const button = page.locator('.btn');
+    const classes = /d-flex flex-center text-white/g;
+
+    await expect(button)
+      .toHaveAttribute('class', classes);
+  });
+
+  test('button tag should have correct CSS styles', async () => {
+    const button = page.locator('.btn');
+
+    await expect(button).toHaveCSS('display', 'flex');
+    await expect(button).toHaveCSS('justify-content', 'center');
+    await expect(button).toHaveCSS('align-items', 'center');
+    await expect(button).toHaveCSS('color', 'rgb(255, 255, 255)');
+  });
+});
+
+test.describe('images tag tests', () => {
+  test('img tag should have correct src path', async () => {
+    const expected = ['images/check-icon.svg', './images/check-icon.svg'];
+    const srcAttribute = await page.evaluate(
+      () => document.querySelector('.btn img').getAttribute('src')
+    );
+
+    expect(expected).toContain(srcAttribute);
+  });
+
+  test('img tag should have mr-1 class', async () => {
+    const button = page.locator('.btn');
+    const images = button.locator('img');
+
+    await expect(images)
+      .toHaveAttribute('class', 'mr-1');
+
+    await expect(images).toHaveCSS('margin-right', '13.3333px');
+  });
+});
+
+test('span element should have text', async () => {
+  const button = page.locator('.btn');
+  const span = button.locator('span');
+
+  await expect(button).toHaveText('Принять');
+});
