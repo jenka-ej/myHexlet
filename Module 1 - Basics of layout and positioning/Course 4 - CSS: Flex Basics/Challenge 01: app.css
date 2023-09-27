@@ -1,0 +1,182 @@
+/* Данное испытание потребует от вас навыков поиска решения методом проб и ошибок.
+
+Иногда, для создания адаптивной вёрстки можно прибегать к хитростям, не лежащим на поверхности.
+Ваша задача — адаптировать для больших разрешений представленную страницу.
+Сейчас, на всех разрешениях экрана меню располагается сверху, а под ним находится контентная часть.
+Ваша задача — при ширине viewport от 1040px расположить меню сбоку от контентной части не «сломав» отображение на мобильных устройствах.
+1) Допишите стили в класс .flexible-aside
+2) Допишите стили в класс .main
+
+Ширина бокового меню: 300px. При ширине viewport меньше 1040 пикселей: на всю доступную ширину.
+Базовая ширина контентной части без учёта отступов: 700px. Блок должен тянуться на всю доступную ширину при любом разрешении viewport. */
+
+body {
+  margin: 0;
+  padding: 0;
+
+  color: #333;
+  font-family: sans-serif;
+  line-height: 1.5;
+
+  background: #f9f9f9;
+}
+
+h1 {
+  margin: 0;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.flexible-aside {
+  flex: 1 1 300px;
+}
+
+.main {
+  flex: 1000 1 700px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.container {
+  padding: 10px 20px;
+}
+
+.nav {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.nav li {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  padding: 15px 30px;
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav li:hover {
+  color: #3c3c3c;
+
+  background: #f1f1f1;
+
+  cursor: pointer;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хекслет</title>
+    <link rel="stylesheet" href="./styles/app.css">
+  </head>
+
+  <body>
+    <div class="d-flex flex-wrap">
+      <aside class="flexible-aside">
+        <nav class="nav">
+          <ul>
+            <li><a href="#">О проекте</a></li>
+            <li><a href="#">Отзывы студентов</a></li>
+            <li><a href="#">Истории успеха</a></li>
+            <li><a href="#">База знаний</a></li>
+            <li><a href="#">Техподдержка</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="container main">
+        <h1>Хекслет — практические курсы по программированию</h1>
+        <p>Мы считаем, что настоящий программист должен понимать, как работает компьютер, и обладать вычислительным
+          мышлением. Он должен видеть проблему, а не задание. Должен уметь анализировать и рассуждать на уровне проблемы
+          и выше, а не только на уровне кода.</p>
+        <p>При сегодняшнем обилии учебных материалов, курсов и книг, главный вопрос, который встает перед новичком, это
+          не «где учиться?», а «что и в каком порядке учить?». Существует множество мнений по этому поводу. Кто-то
+          советует начинать с математики, кто-то советует конкретные языки и технологии.</p>
+      </main>
+    </div>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1200,
+    height: 700,
+  },
+};
+
+let page;
+
+test.beforeAll(async ({ browser }) => {
+  page = await browser.newPage();
+  await page.goto('/');
+  await page.setViewportSize(settings.viewport);
+});
+
+test.afterAll(async () => {
+  await page.close();
+});
+
+test.describe('Adaptive page with Flex module', () => {
+  test.describe.configure({ mode: 'serial' });
+
+  test('1200px. Layout should be equal to template', async () => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('830px. Layout should be equal to template', async () => {
+    await page.setViewportSize({ width: 830, height: 360 });
+
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+
+  test('340px. Layout should be equal to template', async () => {
+    await page.setViewportSize({ width: 340, height: 750 });
+
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
