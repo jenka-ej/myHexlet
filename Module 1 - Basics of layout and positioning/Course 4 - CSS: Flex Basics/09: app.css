@@ -1,0 +1,123 @@
+/* В этом задании вам на вход даётся массив различных статусов загрузки. Но при попадании в HTML они выстроились не в правильном порядке.
+Ожидалось, что все статусы будут идти в порядке возрастания.
+Ваша задача: используя изученное свойство order отсортируйте все элементы в необходимом порядке. Используйте значения от единицы и далее с шагом 1. */
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+
+  width: 500px;
+
+  padding: 30px 50px;
+}
+
+.flex-item {
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
+  height: 50px;
+
+  margin-bottom: 10px;
+  padding-left: 20px;
+
+  font-weight: bold;
+
+  border: 2px solid;
+  border-radius: 5px;
+}
+
+.bg-blue {
+
+  background: #a2cbfa;
+  border-color: #4390e1;
+}
+
+.color-white {
+  color: #fff;
+}
+
+.progress-20 {
+  order: 1;
+
+  width: 20%;
+}
+
+.progress-25 {
+  order: 2;
+
+  width: 25%;
+}
+
+.progress-33 {
+  order: 3;
+
+  width: 33%;
+}
+
+.progress-50 {
+  order: 4;
+
+  width: 50%;
+}
+
+.progress-69 {
+  order: 5;
+
+  width: 69%;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/app.css">
+  <title>Позиционирование</title>
+</head>
+
+<body>
+  <div class="flex-container">
+    <div class="flex-item bg-blue color-white progress-20">Loading 20%</div>
+    <div class="flex-item bg-blue color-white progress-50">Loading 50%</div>
+    <div class="flex-item bg-blue color-white progress-25">Loading 25%</div>
+    <div class="flex-item bg-blue color-white progress-69">Loading 69%</div>
+    <div class="flex-item bg-blue color-white progress-33">Loading 33%</div>
+  </div>
+</body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 700,
+    height: 900,
+  },
+};
+
+test.describe('Progress Line Layout', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('Layout should be equal to template', async ({ page }) => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
