@@ -1,0 +1,95 @@
+/* При создании сеток возникают ситуации, когда необходимо иметь несколько блоков, расположенных вертикально так,
+чтобы некоторые из них могли менять свой размер, а некоторые нет. Flex позволяет всего в пару свойств создать такую группу блоков.
+
+В файле index.html вы увидите следующую структуру проекта:
+<div class="flex-container h-100vh">
+  <div class="flex-item bg-gray no-shrink"></div>
+  <div class="flex-item bg-orange"></div>
+  <div class="flex-item bg-green"></div>
+</div>
+
+Ваша задача: дописать стили таким образом, чтобы все три блока занимали всю высоту экрана.
+Они должны уметь сжиматься и увеличиваться в зависимости от текущей высоты экрана. Базовой высотой каждого элемента является значение в 200 пикселей.
+Первый блок с классом bg-gray не должен сжиматься по высоте меньше этого значения. Для этого в файле app.css есть селектор no-shrink.
+Вам необходимо дописать все недостающие правила для данного проекта. */
+
+body {
+  margin: 0;
+}
+
+.bg-gray {
+  background: #bdbdbd;
+}
+
+.bg-orange {
+  background: #ffcc80;
+}
+
+.bg-green {
+  background: #66bb6a;
+}
+
+.h-100vh {
+  height: 100vh;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-item {
+  flex: 1 1 200px;
+}
+
+.no-shrink {
+  flex-shrink: 0;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles/app.css">
+  <title>Гибкость элементов</title>
+</head>
+<body>
+  <div class="flex-container h-100vh">
+    <div class="flex-item bg-gray no-shrink"></div>
+    <div class="flex-item bg-orange"></div>
+    <div class="flex-item bg-green"></div>
+  </div>
+</body>
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+test.beforeEach(async ({ page }) => {
+  await page.goto('/');
+});
+
+test.describe('layout tests', () => {
+  test('flex-container should have correct styles', async ({ page }) => {
+    const flexContainer = page.locator('.flex-container');
+
+    await expect(flexContainer).toHaveCSS('display', 'flex');
+    await expect(flexContainer).toHaveCSS('flex-direction', 'column');
+  });
+
+  test('flex-item should have correct styles', async ({ page }) => {
+    const flexItem = page.locator('.flex-item').last();
+
+    await expect(flexItem).toHaveCSS('flex', '1 1 200px');
+  });
+
+  test('no-shrink should have correct styles', async ({ page }) => {
+    const noShrink = page.locator('.no-shrink');
+
+    await expect(noShrink).toHaveCSS('flex-shrink', '0');
+  });
+});
