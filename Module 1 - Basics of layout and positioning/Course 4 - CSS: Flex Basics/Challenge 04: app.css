@@ -1,0 +1,380 @@
+/* Гистограмма — распространённый способ визуальной подачи информации. Это может использоваться в администраторских панелях или отчётах. В этом испытании вы создадите собственный вариант гистограммы.
+Гистограмма представляет собой таблицу с точки зрения вёрстки. Это важный момент — если стили не загрузятся, то вся информация будет выведена в виде таблицы, а значит её можно будет прочитать.
+Такое поведение будет почти невозможно при использовании других структур.
+
+Заголовок гистограммы
+В качестве заголовка гистограммы используется шапка таблицы. Внутри неё расположите три табличных заголовка с названием жанров литературы:
+1) Классическая
+2) Фантастика
+3) Романы
+
+Структура шапки:
+<thead class="histogram-header">
+  <tr>
+    <th>Жанры:</th>
+    <th class="px-20 histogram-header-[color]">[genre]</th>
+  </tr>
+</thead>
+
+Где [color] — цвет жанра, а [genre] — название. Класс .px-20 уже доступен в файле app.css, поэтому его описывать отдельно не нужно.
+
+В испытании используется три основных цвета гистограммы:
+1) Красный
+2) Синий
+3) Зелёный
+
+Каждый из цветов уже есть в файле app.css в виде переменной. Используйте их для создания гибкой структуры цветовой схемы.
+
+.histogram-red {
+  background-color: var(--red);
+}
+
+Слева от каждого жанра нарисуйте квадрат со стороной 10 пикселей. Разместите его на 5 пикселей правее от левого края названия.
+Это нужно для создания правильного расположения относительно внутреннего отступа <th>. Для отцентровки квадрата по вертикали можете использовать следующий шаблон:
+top: 50%;
+transform: translateY(-50%);
+
+Заголовки расположите по центру всей гистограммы. Обратите внимание, что всё испытание строится на Flex. Пусть наличие табличной вёрстки не вводит в заблуждение.
+Как и было описано, это делается для доступности.
+
+Столбцы:
+1) Отступ от tbody: 50px сверху
+2) Столбцы реализуются по следующему шаблону:
+<tr class="histogram-row">
+  <td class="histogram-name">[year]</td>
+  <td class="histogram-col">
+    <span [value] class="w-50px histogram-[color]"></span>
+    <p>[value description]</p>
+  </td>
+</tr>
+
+где:
+1) [year] — год
+2) [value] — data-атрибут со значением высоты столбца
+3) [color] — цвет столбца
+4) [value description] — текстовое описание столбца
+
+Каждая строка .histogram-row содержит все значения, которые относятся к текущему году.
+Используя Flex расположите элементы контейнера .histogram-row в соответствии с шаблоном, учитывая следующие моменты:
+1) Минимальная высота строки: 400 пикселей
+2) Внутренние отступы по горизонтали: по 50 пикселей
+Год, указывающий период продаж книг использует абсолютное позиционирование. Элемент располагается на 5 пикселей выше максимального столбца.
+Для получения нужного значения обратите внимание на внутренние отступы колонок .histogram-col
+
+Расположите элементы внутри контейнера .histogram-col в соответствии с шаблоном, учитывая следующие моменты:
+1) Внутренние отступы контейнера: по 10 пикселей с каждой стороны
+2) Для определения высоты столбца используйте проценты. В HTML используйте data-атрибут, в котором будете хранить значение и, используя селектор по атрибуту, устанавливать необходимую высоту.
+Эти значения равны числу проданных книг без учёта тысяч. Например, 40k = 40% высоты
+
+Данные гистограммы:
+2018 год
+Классическая: 40k
+Фантастика: 80k
+Романы: 75k
+
+2019 год
+Классическая: 35k
+Фантастика: 63k
+Романы: 50k
+
+2020 год
+Классическая: 90k
+Фантастика: 77k
+Романы: 80k
+
+Подсказки:
+1) Вам потребуется работа с относительным и абсолютным позиционированием
+2) Для удобства используйте селектор по атрибуту там, где это необходимо
+3) Не все элементы являются Flex-контейнерами. Блоки container, histogram не являются Flex-контейнерами */
+
+:root {
+  --light: #fafafa;
+  --red: #e53935;
+  --green: #4caf50;
+  --blue: #2196f3;
+}
+
+html {
+  color: #333;
+  font: 18px/1.5 sans-serif;
+
+  background-color: var(--light);
+}
+
+body {
+  margin: 0;
+  padding: 50px 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  width: 1100px;
+  margin: 0 auto;
+}
+
+p {
+  margin: 0;
+  margin-top: 5px;
+}
+
+.histogram-header-blue {
+  position: relative;
+}
+
+.histogram-header-red {
+  position: relative;
+}
+
+.histogram-header-green {
+  position: relative;
+}
+
+.histogram-header-blue::before {
+  position: absolute;
+  display: block;
+  width: 10px;
+  height: 10px;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  content: "";
+  background-color: var(--blue);
+}
+
+.histogram-header-red::before {
+  position: absolute;
+  display: block;
+  width: 10px;
+  height: 10px;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  content: "";
+  background-color: var(--red);
+}
+
+.histogram-header-green::before {
+  position: absolute;
+  display: block;
+  width: 10px;
+  height: 10px;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  content: "";
+  background-color: var(--green);
+}
+
+thead {
+  display: flex;
+  justify-content: center;
+}
+
+tbody {
+  display: flex;
+  justify-content: space-between;
+
+  padding-top: 50px;
+}
+
+.histogram {
+  width: 100%;
+}
+
+.histogram-row {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  min-height: 400px;
+  padding: 0 50px;
+}
+
+.histogram-name {
+  color: #333;
+  font-weight: bold;
+  position: absolute;
+  top: -25px;
+}
+
+.histogram-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  height: 100%;
+  padding: 10px;
+}
+
+.histogram-col > p {
+  text-align: center;
+}
+
+[data-height="40k"] {
+  height: 40%;
+}
+
+[data-height="80k"] {
+  height: 80%;
+}
+
+[data-height="75k"] {
+  height: 75%;
+}
+
+[data-height="35k"] {
+  height: 35%;
+}
+
+[data-height="63k"] {
+  height: 63%;
+}
+
+[data-height="50k"] {
+  height: 50%;
+}
+
+[data-height="90k"] {
+  height: 90%;
+}
+
+[data-height="77k"] {
+  height: 77%;
+}
+
+.histogram-blue {
+  background-color: var(--blue);
+}
+
+.histogram-red {
+  background-color: var(--red);
+}
+
+.histogram-green {
+  background-color: var(--green);
+}
+
+.w-50px {
+  width: 50px;
+}
+
+.mt-50px {
+  margin-top: 50px;
+}
+
+.px-20 {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+/* index.html */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>График продаж литературы</title>
+  <link rel="stylesheet" href="styles/app.css">
+
+</head>
+
+<body>
+  <section class="container">
+    <h1>Продажа литературы</h1>
+    <table class="histogram">
+      <thead class="histogram-header">
+        <tr>
+          <th>Жанры:</th>
+          <th class="px-20 histogram-header-blue">Классическая</th>
+          <th class="px-20 histogram-header-red">Фантастика</th>
+          <th class="px-20 histogram-header-green">Романы</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="histogram-row">
+          <td class="histogram-name">2018 год</td>
+          <td class="histogram-col">
+            <span data-height="40k" class="w-50px histogram-blue"></span>
+            <p>40k</p>
+          </td>
+          <td class="histogram-col">
+            <span data-height="80k" class="w-50px histogram-red"></span>
+            <p>80k</p>
+          </td>
+          <td class="histogram-col">
+            <span data-height="75k" class="w-50px histogram-green"></span>
+            <p>75k</p>
+          </td>
+        </tr>
+        <tr class="histogram-row">
+          <td class="histogram-name">2019 год</td>
+          <td class="histogram-col">
+            <span data-height="35k" class="w-50px histogram-blue"></span>
+            <p>35k</p>
+          </td>
+          <td class="histogram-col">
+            <span data-height="63k" class="w-50px histogram-red"></span>
+            <p>63k</p>
+          </td>
+          <td class="histogram-col">
+            <span data-height="50k" class="w-50px histogram-green"></span>
+            <p>50k</p>
+          </td>
+        </tr>
+        <tr class="histogram-row">
+          <td class="histogram-name">2020 год</td>
+          <td class="histogram-col">
+            <span data-height="90k" class="w-50px histogram-blue"></span>
+            <p>90k</p>
+          </td>
+          <td class="histogram-col">
+            <span data-height="77k" class="w-50px histogram-red"></span>
+            <p>77k</p>
+          </td>
+          <td class="histogram-col">
+            <span data-height="80k" class="w-50px histogram-green"></span>
+            <p>80k</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1440,
+    height: 900,
+  },
+};
+
+test.describe('Histogram Component Layout', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('1440px. Layout should be equal to template', async ({ page }) => {
+    const template = await page
+      .locator('html')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
