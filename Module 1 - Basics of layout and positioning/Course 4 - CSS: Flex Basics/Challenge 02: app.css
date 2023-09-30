@@ -1,0 +1,148 @@
+/* В этом упражнении вам необходимо сделать плиточную галерею используя только возможности Flex.
+Зачастую такой вид галереи создаётся при помощи JavaScript, так как необходимо подстраивать элементы друг под другом с одинаковыми отступами вне зависимости от высоты элементов в строке.
+
+Ваша задача: задать стили для блока gallery и элементов gallery-item.
+
+Подсказки:
+1) Подумайте, по какой именно оси должны отображаться элементы внутри блока gallery
+2) Вам понадобится свойство order
+3) Используйте псевдокласс nth-child
+4) Не забудьте про перенос элементов */
+
+.gallery {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: flex-start;
+
+  box-sizing: border-box;
+  width: 60%;
+  height: 700px;
+
+  padding: 20px 30px;
+
+  background: #f9f9f9;
+}
+
+.gallery-item {
+  box-sizing: border-box;
+  width: 32%;
+  margin-bottom: 10px;
+  padding: 10px;
+
+  box-shadow:
+    0 2px 2px rgb(0 90 250 / 5%),
+    0 4px 4px rgb(0 90 250 / 5%),
+    0 8px 8px rgb(0 90 250 / 5%),
+    0 16px 16px rgb(0 90 250 / 5%);
+}
+
+.gallery-item:nth-child(3n + 1) {
+  align-self: flex-start;
+  order: 1;
+}
+
+.gallery-item:nth-child(3n + 2) {
+  align-self: flex-start;
+  order: 2;
+}
+
+.gallery-item:nth-child(3n + 3) {
+  align-self: flex-start;
+  order: 3;
+}
+
+.gallery-blue .gallery-item {
+  background: #90caf9;
+}
+
+.height-120 {
+  height: 120px;
+}
+
+.height-140 {
+  height: 140px;
+}
+
+.height-150 {
+  height: 150px;
+}
+
+.height-160 {
+  height: 160px;
+}
+
+.height-170 {
+  height: 170px;
+}
+
+.height-180 {
+  height: 180px;
+}
+
+.height-190 {
+  height: 190px;
+}
+
+.text-white {
+  color: #fff;
+}
+
+/* __tests__ */
+
+<!DOCTYPE html>
+<html lang="ru">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/app.css">
+    <title>Плиточная раскладка</title>
+  </head>
+
+  <body>
+    <div class="gallery gallery-blue">
+      <div class="gallery-item text-white height-140">1</div>
+      <div class="gallery-item text-white height-190">2</div>
+      <div class="gallery-item text-white height-170">3</div>
+      <div class="gallery-item text-white height-120">4</div>
+      <div class="gallery-item text-white height-160">5</div>
+      <div class="gallery-item text-white height-180">6</div>
+      <div class="gallery-item text-white height-140">7</div>
+      <div class="gallery-item text-white height-150">8</div>
+      <div class="gallery-item text-white height-170">9</div>
+      <div class="gallery-item text-white height-120">10</div>
+    </div>
+  </body>
+
+</html>
+
+/* __tests__ */
+
+const { test, expect } = require('@playwright/test');
+
+const settings = {
+  screenshot: {
+    type: 'jpeg',
+    quality: 70,
+    fullPage: true,
+  },
+  viewport: {
+    width: 1440,
+    height: 900,
+  },
+};
+
+test.describe('Masonry Component Layout', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/');
+    await page.setViewportSize(settings.viewport);
+  });
+
+  test('Layout should be equal to template', async ({ page }) => {
+    const template = await page
+      .locator('.gallery')
+      .screenshot(settings.screenshot);
+
+    expect(template).toMatchSnapshot();
+  });
+});
