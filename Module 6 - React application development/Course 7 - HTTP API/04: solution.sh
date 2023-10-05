@@ -5,7 +5,7 @@
 
 GET /users HTTP/1.1
 Host: hexlet.local
-Conenection: close
+Connection: close
 
 # __tests__
 
