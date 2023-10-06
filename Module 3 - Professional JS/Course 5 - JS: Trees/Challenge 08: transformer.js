@@ -39,9 +39,6 @@
 
 export default (mainTree, mainPoint) => {
   const buildWay = (tree, point, path = []) => {
-    if (Array.isArray(tree[0])) {
-      return tree.map((node) => buildWay(node, point, path));
-    }
     const [newParentNode, children] = tree;
     if (newParentNode === point) {
       return [...path, newParentNode];
