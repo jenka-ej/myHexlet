@@ -91,6 +91,9 @@ export default (mainTree, mainPoint) => {
       if (!child) {
         return parent;
       }
+      if (child.length === 0) {
+        return [parent];
+      }
       return [parent, child];
     });
     return mainAbsPathWithChildren.reduce((acc, node) => {
