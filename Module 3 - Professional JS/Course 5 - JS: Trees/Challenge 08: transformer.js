@@ -109,7 +109,7 @@ const transform = (mainTree, mainPoint) => {
         const [parent, child] = node;
         const newChild = child;
         if (!newChild) {
-          node.push(acc);
+          node.push([acc]);
           return node;
         }
         newChild.push(acc);
