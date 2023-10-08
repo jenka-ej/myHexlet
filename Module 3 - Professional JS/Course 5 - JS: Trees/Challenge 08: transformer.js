@@ -37,7 +37,9 @@
 
 // import _ from 'lodash';
 
-export default (mainTree, mainPoint) => {
+const transform = (mainTree, mainPoint) => {
+  // find absolute path (flattened) to main point
+
   const buildWay = (tree, point, path = []) => {
     const [newParentNode, children] = tree;
     if (newParentNode === point) {
@@ -53,12 +55,11 @@ export default (mainTree, mainPoint) => {
 
   const mainAbsPath = flattenWay(buildWay(mainTree, mainPoint));
 
+  // find children on every element of absolute path with filter on next element
+
   const childLeafs = (absPath, anotherTree) => {
     const result = [];
     const findLeafs = (point, tree, nextPoint = '') => {
-      if (Array.isArray(tree[0])) {
-        return tree.forEach((node) => findLeafs(point, node, nextPoint));
-      }
       const [newParentNode, children] = tree;
       if (!children) {
         return null;
@@ -82,7 +83,11 @@ export default (mainTree, mainPoint) => {
 
   const mainAbsPathChildren = childLeafs(mainAbsPath, mainTree);
 
+  // construct new tree
+
   const construct = (absPath, leafes) => {
+    // join parents with children
+
     const mainAbsPathWithChildren = absPath.map((parent, index) => {
       const child = leafes[index];
       if (!child) {
@@ -93,6 +98,9 @@ export default (mainTree, mainPoint) => {
       }
       return [parent, child];
     });
+
+    // build new tree by pushing current element to next
+
     return mainAbsPathWithChildren.reduce((acc, node) => {
       if (acc.length === 0) {
         return node;
@@ -100,6 +108,10 @@ export default (mainTree, mainPoint) => {
       if (Array.isArray(node)) {
         const [parent, child] = node;
         const newChild = child;
+        if (!newChild) {
+          node.push(acc);
+          return node;
+        }
         newChild.push(acc);
         const compare = (a, b) => {
           if (a[0] > b[0]) {
@@ -118,6 +130,8 @@ export default (mainTree, mainPoint) => {
 
   return construct(mainAbsPath, mainAbsPathChildren);
 };
+
+export default transform;
 
 /* __tests__ */
 
