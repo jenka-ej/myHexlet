@@ -63,6 +63,7 @@ export default function dispatch(options) {
     url,
     method,
   } = options;
+
   const parsedUrl = new URL(url);
   const queryParams = {};
 
@@ -83,38 +84,29 @@ export default function dispatch(options) {
     };
   }
 
-  if (method === 'GET') {
-    return new Promise((resolve, reject) => {
-      const req = http.get(parsedUrl, (res) => {
-        const getResponse = getModifiedResponse(res);
-
-        res.on('data', (chunk) => {
-          getResponse.data += chunk;
-        }).on('end', () => {
-          resolve(getResponse);
-        });
-      });
-      req.on('error', () => {
-        reject();
-      });
-      req.end();
-    });
+  function getOptions(currentMethod, currentUrl, currentData) {
+    const baseOptions = {
+      host: currentUrl.hostname,
+      port: currentUrl.port,
+      path: `${currentUrl.pathname}${currentUrl.search}`,
+      method: currentMethod,
+    };
+    if (currentMethod === 'GET') {
+      return baseOptions;
+    }
+    return {
+      ...baseOptions,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(currentData),
+      },
+    };
   }
 
   const postData = new URLSearchParams(data).toString();
-  const httpOptions = {
-    host: parsedUrl.hostname,
-    port: parsedUrl.port,
-    path: parsedUrl.pathname,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'Content-Length': Buffer.byteLength(postData),
-    },
-  };
 
   return new Promise((resolve, reject) => {
-    const req = http.request(httpOptions, (res) => {
+    const req = http.request(getOptions(method, parsedUrl, postData), (res) => {
       const postResponse = getModifiedResponse(res);
 
       res.on('data', (chunk) => {
