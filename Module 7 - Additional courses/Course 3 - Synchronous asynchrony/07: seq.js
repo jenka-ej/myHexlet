@@ -75,6 +75,10 @@ export default class Seq {
   }
 
   skip(iter) {
+    if (iter > this.length) {
+      throw new Error('Cannot skip more than length of object');
+    }
+
     let newStartNumber = this.current;
     for (let i = 0; i < iter; i += 1) {
       newStartNumber = this.next(newStartNumber);
